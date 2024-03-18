@@ -60,21 +60,27 @@ class DefaultFirebaseOptions {
   //     messagingSenderId: "Your firebase messagingSenderId",
   //     appId: "Your firebase appId");
 
+ //Ravshanboy
   static const FirebaseOptions web = FirebaseOptions(
-      // apiKey: "AIzaSyBWWnfsKSnQEUa1kwhoihwiknjlkwnJ1TIVAxb6tU8DIf5lQ",
-      // authDomain: "pos-saas-a7b6c.firebaseapp.com",
-      // databaseURL: "https://pos-saas-a7b6c-default-rtdb.firebaseio.com",
-      // projectId: "pos-saas-a7b6c",
-      // storageBucket: "pos-saas-a7b6c.appspot.com",
-      // messagingSenderId: "606700156156",
-      // appId: "1:606700156156:web:d10d411b843f218a3dd379");
-  apiKey: "AIzaSyDBnlj7lgb7HTVoX9Wi9QOE6ENqyOV55MU",
+   apiKey: "AIzaSyDBnlj7lgb7HTVoX9Wi9QOE6ENqyOV55MU",
   authDomain: "salesprp-31e4a.firebaseapp.com",
   databaseURL: "https://salesprp-31e4a-default-rtdb.firebaseio.com",
   projectId: "salesprp-31e4a",
   storageBucket: "salesprp-31e4a.appspot.com",
   messagingSenderId: "980258861434",
   appId: "1:980258861434:web:ac6720286e4169b6c026c3");
+}
+
+  //Zuhriddin
+// static const FirebaseOptions web = FirebaseOptions(
+//     apiKey: "AIzaSyCSbFJamYnB1libGN76-XR2vBiSi4xrt7c",
+//     authDomain: "financepm-a48bd.firebaseapp.com",
+//     databaseURL: "https://financepm-a48bd-default-rtdb.firebaseio.com",
+//     projectId: "financepm-a48bd",
+//     storageBucket: "financepm-a48bd.appspot.com",
+//     messagingSenderId: "241797545371",
+//     appId: "1:241797545371:web:978a96b4b8069f2cf6753e",
+//     measurementId: "G-PSGPLPKYC7");
 }
 
 

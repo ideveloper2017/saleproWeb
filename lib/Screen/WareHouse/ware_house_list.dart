@@ -14,6 +14,7 @@ import 'package:salespro_admin/model/product_model.dart';
 import 'package:salespro_admin/generated/l10n.dart' as lang;
 import '../../Provider/expense_category_proivder.dart';
 import '../../Provider/product_provider.dart';
+import '../../commas.dart';
 import '../../const.dart';
 import '../../currency.dart';
 import '../Widgets/Constant Data/constant.dart';
@@ -461,10 +462,13 @@ class _WareHouseListState extends State<WareHouseList> {
                                                         const DataColumn(
                                                           label: Text('S.L'),
                                                         ),
-                                                        const DataColumn(label: Text('Warehouse Name')),
-                                                        const DataColumn(label: Text('Address')),
-                                                        const DataColumn(label: Text('Stock Quantity')),
-                                                        const DataColumn(label: Text('Stock Value')),
+                                                        DataColumn(label: Text('Sklad')),
+                                                        DataColumn(label: Text(lang.S.of(context).address)),
+                                                        DataColumn(label: Text(lang.S.of(context).quantity)),
+                                                        DataColumn(label: Text(lang.S.of(context).purchase)),
+                                                        DataColumn(label: Text('Retail')),
+                                                        DataColumn(label: Text('Deailer')),
+                                                        DataColumn(label: Text('Wholesale')),
                                                         DataColumn(
                                                             label: Text(
                                                           'Action',
@@ -477,16 +481,20 @@ class _WareHouseListState extends State<WareHouseList> {
                                                         (index) {
                                                           num stockValue = 0;
                                                           num totalStock = 0;
+                                                          num purchaseValue=0;
+                                                          num productWholeSalePriceValue=0;
+                                                          num productDealerPriceValue=0;
+
                                                           for (var element in productSnap) {
                                                             if (showAbleProducts[index].id == element.warehouseId) {
-                                                              stockValue +=
-                                                                  (num.tryParse(element.productStock) ?? 0) * (num.tryParse(element.productSalePrice) ?? 0);
+                                                              stockValue += (num.tryParse(element.productStock) ?? 0) * (num.tryParse(element.productSalePrice) ?? 0);
                                                               totalStock += (num.tryParse(element.productStock) ?? 0);
+                                                              purchaseValue +=(num.tryParse(element.productStock) ?? 0) *(num.tryParse(element.productPurchasePrice) ?? 0);
+                                                              productWholeSalePriceValue +=(num.tryParse(element.productStock) ?? 0) *(num.tryParse(element.productWholeSalePrice) ?? 0);
+                                                              productDealerPriceValue +=(num.tryParse(element.productStock) ?? 0) *(num.tryParse(element.productDealerPrice) ?? 0);
                                                             }
                                                           }
                                                           return DataRow(
-
-
                                                             cells: [
                                                               DataCell(
                                                                 Text('${index + 1}'),
@@ -517,7 +525,28 @@ class _WareHouseListState extends State<WareHouseList> {
                                                               ),
                                                               DataCell(
                                                                 Text(
-                                                                  '$currency${stockValue.toString()}',
+                                                                  '${myFormat.format(purchaseValue)} $currency',
+                                                                  style: kTextStyle.copyWith(color: kGreyTextColor),
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                ),
+                                                              ),DataCell(
+                                                                Text(
+                                                                  '${myFormat.format(stockValue)} $currency',
+                                                                  style: kTextStyle.copyWith(color: kGreyTextColor),
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                ),
+                                                              ),DataCell(
+                                                                Text(
+                                                                  '${myFormat.format(productDealerPriceValue)} $currency',
+                                                                  style: kTextStyle.copyWith(color: kGreyTextColor),
+                                                                  maxLines: 2,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                ),
+                                                              ),DataCell(
+                                                                Text(
+                                                                  '${myFormat.format(productWholeSalePriceValue)} $currency',
                                                                   style: kTextStyle.copyWith(color: kGreyTextColor),
                                                                   maxLines: 2,
                                                                   overflow: TextOverflow.ellipsis,

@@ -503,6 +503,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "purchasePrice": MessageLookupByLibrary.simpleMessage("Xarid narxi"),
         "purchaseTransaction":
             MessageLookupByLibrary.simpleMessage("Xarid operatsiyasi"),
+        "quantity": MessageLookupByLibrary.simpleMessage("Miqdor*"),
         "quotation": MessageLookupByLibrary.simpleMessage("Iqtibos"),
         "quotationList":
             MessageLookupByLibrary.simpleMessage("Qo\'shtirnoqlar ro\'yxati"),

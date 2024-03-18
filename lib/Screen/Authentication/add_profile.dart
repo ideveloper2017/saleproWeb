@@ -138,7 +138,38 @@ class _ProfileAddState extends State<ProfileAdd> {
 
 
   //__________________________________________________shop_category_______________________________
+  // ShopCategoryModel? selectedShopCategory;
+  // DropdownButton<ShopCategoryModel> getShopCategory({required List<ShopCategoryModel> list}) {
+  //   List<DropdownMenuItem<ShopCategoryModel>> dropDownItems = [];
+  //   for (var element in list) {
+  //     dropDownItems.add(DropdownMenuItem(
+  //       value: element,
+  //       child: Text(
+  //         element.categoryName.toString(),
+  //         style: kTextStyle.copyWith(color: kGreyTextColor, fontWeight: FontWeight.bold),
+  //         overflow: TextOverflow.ellipsis,
+  //       ),
+  //     ));
+  //   }
+  //
+  //   return DropdownButton(
+  //     icon: Icon(
+  //       Icons.keyboard_arrow_down_outlined,
+  //       color: kGreyTextColor,
+  //     ),
+  //     items: dropDownItems,
+  //     hint: Text('Select Shop Category'),
+  //     value: selectedShopCategory,
+  //     onChanged: (ShopCategoryModel? value) {
+  //       setState(() {
+  //         selectedShopCategory = value;
+  //       });
+  //     },
+  //   );
+  // }
+
   ShopCategoryModel? selectedShopCategory;
+
   DropdownButton<ShopCategoryModel> getShopCategory({required List<ShopCategoryModel> list}) {
     List<DropdownMenuItem<ShopCategoryModel>> dropDownItems = [];
     for (var element in list) {
@@ -493,7 +524,7 @@ class _ProfileAddState extends State<ProfileAdd> {
                                   onPressed: () async {
                                     if (selectedShopCategory?.categoryName?.isNotEmpty ?? false) {
                                       EasyLoading.showError('Please select Business Category');
-                                    } else if (validateAndSave()) {
+                                    // } else if (validateAndSave()) {
                                       try {
                                         EasyLoading.show(status: 'Loading...', dismissOnTap: false);
                                         final DatabaseReference personalInformationRef =

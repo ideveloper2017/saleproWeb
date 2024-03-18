@@ -295,7 +295,7 @@
   "productCod": "Mahsulot kodi*",
   "enterProductCode": "Mahsulot kodini kiriting",
   "enterProductQuantity": "Mahsulot miqdorini kiriting",
-  "Miqdor": "Miqdor*",
+  "quantity": "Miqdor*",
   "productUnit": "Mahsulot birligi",
   "enterPurchasePrice": "Xarid narxini kiriting",
   "salePrices": "Sotuv narxi*",
