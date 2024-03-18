@@ -1717,8 +1717,8 @@ class _AddProductState extends State<AddProduct> {
                                                           hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                                                         ),
                                                       ),
-                                                    ),
-                                                    const SizedBox(width: 20.0),
+                                                    ).visible(false),
+                                                    //const SizedBox(width: 20.0),
                                                     wareHouseList.when(
                                                       data: (warehouse) {
                                                         List<WareHouseModel> wareHouseList = warehouse;
@@ -1763,7 +1763,7 @@ class _AddProductState extends State<AddProduct> {
                                                       },
                                                     ),
                                                   ],
-                                                ).visible(false),
+                                                ),
                                                 const SizedBox(height: 20.0),
 
                                                 ///______________ExpireDate______________________
