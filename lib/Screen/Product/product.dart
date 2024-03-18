@@ -682,6 +682,7 @@ class _ProductState extends State<Product> {
                                                     const DataColumn(label: Text('Image')),
                                                     DataColumn(label: Flexible(child: Text('Product Name',style: kTextStyle.copyWith(color: Colors.black, overflow: TextOverflow.ellipsis),))),
                                                     const DataColumn(label: Text('Category')),
+                                                    const DataColumn(label: Text('SKU')),
                                                     const DataColumn(label: Text('Purchase')),
                                                     const DataColumn(label: Text('Retailer')),
                                                     const DataColumn(label: Text('Dealer')),
@@ -737,6 +738,14 @@ class _ProductState extends State<Product> {
                                                               style: kTextStyle.copyWith(
                                                                   color:
                                                                   (!isRegularSelected && product.expiringDate != null) ? Colors.red : kGreyTextColor),
+                                                            ),
+                                                          ),
+                                                          DataCell(
+                                                            Text(
+                                                              "${product.productCode}",
+                                                              style: kTextStyle.copyWith(color: kGreyTextColor),
+                                                              maxLines: 2,
+                                                              overflow: TextOverflow.ellipsis,
                                                             ),
                                                           ),
                                                           DataCell(
