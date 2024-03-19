@@ -1,5 +1,8 @@
 // ignore_for_file: unused_result, use_build_context_synchronously
 
+import 'dart:convert';
+import 'dart:js_interop';
+
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -84,6 +87,7 @@ class _AddProductState extends State<AddProduct> {
 
   List<String> productSerialNumberList = [];
   bool saleButtonClicked = false;
+
 
   Future<void> addCategoryShowPopUp({required WidgetRef ref, required List<String> categoryNameList, required BuildContext addProductContext}) async {
     GlobalKey<FormState> categoryNameKey = GlobalKey<FormState>();
@@ -1392,9 +1396,11 @@ class _AddProductState extends State<AddProduct> {
                                                           }
                                                         },
                                                         onSaved: (value) {
+
+
                                                           if (value.removeAllWhiteSpace().isEmptyOrNull) {
-                                                            productCodeController.text = DateTime.now().toString();
-                                                          } else {
+                                                          //  productCodeController.text = '';
+                                                          // } else {
                                                             productCodeController.text = value!;
                                                           }
                                                         },
@@ -1757,7 +1763,7 @@ class _AddProductState extends State<AddProduct> {
                                                       },
                                                     ),
                                                   ],
-                                                ),
+                                                ).visible(false),
                                                 const SizedBox(height: 20.0),
 
                                                 ///______________ExpireDate______________________
@@ -1836,7 +1842,7 @@ class _AddProductState extends State<AddProduct> {
                                                       ),
                                                     ),
                                                   ],
-                                                ),
+                                                ).visible(false),
                                                 const SizedBox(height: 20.0),
 
                                                 ///_______Lower_stock___________________________
@@ -2012,6 +2018,8 @@ class _AddProductState extends State<AddProduct> {
                                                                       EasyLoading.show(status: 'Loading...', dismissOnTap: false);
                                                                       final DatabaseReference productInformationRef =
                                                                           FirebaseDatabase.instance.ref().child(await getUserID()).child('Products');
+                                                                      var productcode=await productInformationRef.once();
+                                                                      EasyLoading.show(status:productcode.toJSBox.toString() ,dismissOnTap:false) ;
                                                                       ProductModel productModel = ProductModel(
                                                                         productNameController.text,
                                                                         selectedCategories ?? '',

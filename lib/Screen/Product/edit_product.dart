@@ -32,12 +32,16 @@ class EditProduct extends StatefulWidget {
   final ProductModel productModel;
   final List<String> allProductsNameList;
 
+
+
   @override
   State<EditProduct> createState() => _AddProductState();
 }
 
 class _AddProductState extends State<EditProduct> {
   GlobalKey<FormState> addProductFormKey = GlobalKey<FormState>();
+
+
   bool categoryValidateAndSave() {
     final form = addProductFormKey.currentState;
     if (form!.validate()) {
@@ -53,6 +57,8 @@ class _AddProductState extends State<EditProduct> {
   String productPicture = '';
 
   Uint8List? image;
+
+
 
   Future<void> uploadFile() async {
     // File file = File(filePath);
@@ -679,7 +685,7 @@ class _AddProductState extends State<EditProduct> {
                                                       hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
                                                     ),
                                                   ),
-                                                ),
+                                                ).visible(false),
                                                 const SizedBox(height: 20.0),
                                                 ///______________ExpireDate______________________
                                                 Row(
@@ -752,7 +758,7 @@ class _AddProductState extends State<EditProduct> {
                                                       ),
                                                     ),
                                                   ],
-                                                ),
+                                                ).visible(false),
                                                 const SizedBox(height: 20.0),
 
                                                 ///_______Lower_stock___________________________

@@ -50,7 +50,7 @@ class _ProductState extends State<Product> {
     final ref = FirebaseDatabase.instance.ref(constUserId).child('Products');
     String productKey = '';
     ref.keepSynced(true);
-
+    ref.orderByKey().once();
     ref.orderByKey().get().then((value) {
       for (var element in value.children) {
         var data = jsonDecode(jsonEncode(element.value));
@@ -432,6 +432,112 @@ class _ProductState extends State<Product> {
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(20.0), color: kWhiteTextColor),
                                     child: Column(
                                       children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Container(
+                                            padding: const EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                              color: kWhiteTextColor,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                ///________Total Sale____________________________________________
+                                                Container(
+                                                  padding: const EdgeInsets.only(left: 10.0, right: 20.0, top: 10.0, bottom: 10.0),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                    color: const Color(0xFFCFF4E3),
+                                                  ),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        '$currency ${myFormat.format(double.parse("0") ?? 0)}',
+                                                        style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold, fontSize: 18.0),
+                                                      ),
+                                                      Text(
+                                                        lang.S.of(context).purchase,
+                                                        style: kTextStyle.copyWith(color: kTitleColor),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10.0),
+
+                                                ///________Total_purchase_________________________________________
+                                                Container(
+                                                  padding: const EdgeInsets.only(left: 10.0, right: 20.0, top: 10.0, bottom: 10.0),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                    color: const Color(0xFF2DB0F6).withOpacity(0.5),
+                                                  ),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        '$currency ${myFormat.format(double.tryParse("0") ?? 0)}',
+                                                        style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold, fontSize: 18.0),
+                                                      ),
+                                                      Text(
+                                                        lang.S.of(context).retailer,
+                                                        style: kTextStyle.copyWith(color: kTitleColor),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10.0),
+
+                                                ///____________Total received Amount_________________________________
+                                                Container(
+                                                  padding: const EdgeInsets.only(left: 10.0, right: 20.0, top: 10.0, bottom: 10.0),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                    color: const Color(0xFF15CD75).withOpacity(0.5),
+                                                  ),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        '$currency ${myFormat.format(double.tryParse("0") ?? 0)}',
+                                                        style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold, fontSize: 18.0),
+                                                      ),
+                                                      Text(
+                                                        lang.S.of(context).dealer,
+                                                        style: kTextStyle.copyWith(color: kTitleColor),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10.0),
+
+                                                ///________total_customer_due___________________________________________________________
+                                                Container(
+                                                  padding: const EdgeInsets.only(left: 10.0, right: 20.0, top: 10.0, bottom: 10.0),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(10.0),
+                                                    color: const Color(0xFFFEE7CB),
+                                                  ),
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        '$currency ${myFormat.format(double.tryParse("0") ?? 0)}',
+                                                        style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold, fontSize: 18.0),
+                                                      ),
+                                                      Text(
+                                                        lang.S.of(context).wholesale,
+                                                        style: kTextStyle.copyWith(color: kTitleColor),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10.0),
+                                             ],
+                                            ),
+                                          ),
+                                        ),
+
                                         ///________title and add product_______________________________________
                                         Row(
                                           children: [
@@ -819,10 +925,10 @@ class _ProductState extends State<Product> {
                                                                             ),
                                                                           ],
                                                                         ).onTap(
-                                                                              () => EditProduct(
-                                                                            productModel: product,
-                                                                            allProductsNameList: allProductsNameList,
-                                                                          ).launch(context),
+                                                                              () =>EditProduct(
+                                                                             productModel: product,
+                                                                             allProductsNameList: allProductsNameList,
+                                                                           ).launch(context),
                                                                         ),
                                                                       ),
                                                                       PopupMenuItem(
