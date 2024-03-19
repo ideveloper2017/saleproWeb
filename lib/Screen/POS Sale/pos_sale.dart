@@ -2196,10 +2196,10 @@ class _PosSaleState extends State<PosSale> {
                                                                   ),
                                                                   child: Text(
                                                                     // ignore: prefer_interpolation_to_compose_strings
-                                                                    'Price: $currency ' +
+
                                                                         myFormat.format(double.tryParse(productPriceChecker(
                                                                                 product: showProductVsCategory[i], customerType: selectedCustomerType)) ??
-                                                                            0),
+                                                                            0)+' $currency',
                                                                     style: kTextStyle.copyWith(color: kWhiteTextColor, fontWeight: FontWeight.bold, fontSize: 14.0),
                                                                   ),
                                                                 ),

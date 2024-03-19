@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, unused_result
+  // ignore_for_file: use_build_context_synchronously, unused_result
 
 import 'dart:convert';
 
@@ -19,6 +19,7 @@ import 'package:salespro_admin/generated/l10n.dart' as lang;
 import '../../Provider/product_provider.dart';
 import '../../const.dart';
 import '../../subscription.dart';
+import '../WareHouse/warehouse_model.dart';
 import '../Widgets/Constant Data/constant.dart';
 import '../Widgets/Constant Data/export_button.dart';
 import '../Widgets/Footer/footer.dart';
@@ -41,6 +42,7 @@ class _ProductState extends State<Product> {
   int itemCount = 10;
   String searchItem = '';
   bool isRegularSelected = true;
+  double grandTotal = 0;
 
   List<String> title = ['Product List', 'Expired List'];
 
@@ -358,6 +360,20 @@ class _ProductState extends State<Product> {
     EasyLoading.showSuccess('Done');
   }
 
+  double calculateGrandTotal(List<WareHouseModel> showAbleProducts, List<ProductModel> productSnap) {
+    grandTotal = 0;
+    for (var index = 0; index < showAbleProducts.length; index++) {
+      for (var element in productSnap) {
+        if (showAbleProducts[index].id == element.warehouseId) {
+          double stockValue = (double.tryParse(element.productSalePrice) ?? 0);
+          grandTotal += stockValue;
+        }
+      }
+    }
+
+    return grandTotal;
+  }
+
   ScrollController mainScroll = ScrollController();
 
   int _productsPerPage = 10; // Default number of items to display
@@ -433,9 +449,9 @@ class _ProductState extends State<Product> {
                                     child: Column(
                                       children: [
                                         Padding(
-                                          padding: const EdgeInsets.all(20.0),
+                                          padding: const EdgeInsets.all(0.0),
                                           child: Container(
-                                            padding: const EdgeInsets.all(10.0),
+                                            padding: const EdgeInsets.only(left:0.0,right:0.0,top:0.0,bottom:5.0),
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(10.0),
                                               color: kWhiteTextColor,
@@ -453,7 +469,7 @@ class _ProductState extends State<Product> {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Text(
-                                                        '$currency ${myFormat.format(double.parse("0") ?? 0)}',
+                                                        '$currency ${myFormat.format(calculateGrandTotal() ?? 0)}',
                                                         style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold, fontSize: 18.0),
                                                       ),
                                                       Text(

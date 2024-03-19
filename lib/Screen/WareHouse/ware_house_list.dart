@@ -432,8 +432,8 @@ class _WareHouseListState extends State<WareHouseList> {
                                                 for (var element in snapShot) {
                                                   if (element.warehouseName.removeAllWhiteSpace().toLowerCase().contains(searchItem.toLowerCase()) ||
                                                       element.warehouseName.contains(searchItem)) {
-                                                    calculateGrandTotal(showAbleProducts, productSnap);
                                                     showAbleProducts.add(element);
+                                                    calculateGrandTotal(showAbleProducts, productSnap);
                                                   }
                                                 }
                                                 return SizedBox(

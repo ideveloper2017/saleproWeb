@@ -221,10 +221,13 @@ class _CurrentStockWidgetState extends State<CurrentStockWidget> {
                                                   ))),
                                         ),
                                         DataCell(
+                                          // Text(myFormat.format(double.tryParse((reTransaction[index].productSalePrice.toInt() * reTransaction[index].productStock.toInt()).toString())??0),
                                           GestureDetector(
                                               onTap: () {},
-                                              child: Text(myFormat.format(double.tryParse((reTransaction[index].productSalePrice.toInt() * reTransaction[index].productStock.toInt()).toString())??0),
-                                                  style: kTextStyle.copyWith(color: kGreyTextColor))),
+                                              child: Text(
+                                                myFormat.format((double.tryParse(reTransaction[index].productSalePrice)??0)* reTransaction[index].productStock.toInt()),
+                                                style: kTextStyle.copyWith(color: kGreyTextColor),
+                                              )),
                                         ),
                                         // DataCell(
                                         //   PopupMenuButton(
