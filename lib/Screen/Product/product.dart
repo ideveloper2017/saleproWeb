@@ -1,6 +1,7 @@
   // ignore_for_file: use_build_context_synchronously, unused_result
 
 import 'dart:convert';
+import 'dart:js_interop';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:salespro_admin/Screen/Product/add_product.dart';
 import 'package:salespro_admin/Screen/Product/product%20barcode/barcode_generate.dart';
@@ -469,7 +471,7 @@ class _ProductState extends State<Product> {
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
                                                       Text(
-                                                        '$currency ${myFormat.format(calculateGrandTotal() ?? 0)}',
+                                                        '$currency ${myFormat.format(double.tryParse("0") ?? 0)}',
                                                         style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold, fontSize: 18.0),
                                                       ),
                                                       Text(
@@ -743,7 +745,22 @@ class _ProductState extends State<Product> {
                                               }
                                             }),
                                             const SizedBox(width: 10),
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: kWhiteTextColor,border: Border.all(color: kBorderColorTextField)),
+                                              child:Row(
+                                                  children: [
+                                                    Icon(MdiIcons.microsoftExcel, size: 18.0, color: CupertinoColors.activeGreen),
+                                                    const SizedBox(width: 5.0),
+                                                    Text(
+                                                      'Excel Export',
+                                                      style: kTextStyle.copyWith(color: kTitleColor),
+                                                    ),
 
+                                                  ],
+                                              )
+                                            ).onTap(() async=>exportXLS(showAbleProducts)),
+                                            const SizedBox(width: 10),
                                             ///________________add_productS________________________________________________
                                             InkWell(
                                               onTap: () => Navigator.pushNamed(context, BarcodeGenerate.route),
@@ -1195,5 +1212,21 @@ class _ProductState extends State<Product> {
         ),
       ),
     );
+  }
+
+
+  Future<void> exportXLS(List<ProductModel> product) async{
+
+    print(product.map((e)=>jsonEncode({"productCode":'${e.productCode}',
+                            'productName':'${e.productName}',
+                            'Category':'${e.productCategory}',
+                            'Brand':'${e.brandName}',
+                            'Stock':'${e.productStock}',
+                            'Purchase_Price':'${e.productPurchasePrice}',
+                            'Sales_Price':'${e.productSalePrice}',
+                            'Dealer_Price':'${e.productDealerPrice}',
+                            'Wholesale_Price':'${e.productWholeSalePrice}',
+       }))
+        .toList(growable:true));
   }
 }

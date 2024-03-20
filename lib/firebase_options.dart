@@ -71,6 +71,18 @@ class DefaultFirebaseOptions {
   appId: "1:980258861434:web:ac6720286e4169b6c026c3");
 }
 
+//Umarxon
+//   static const FirebaseOptions web = FirebaseOptions(
+//       apiKey: "AIzaSyAroa-pXdsP48Or0Jto27jujJDKTc_NJLI",
+//       authDomain: "financepmparfum.firebaseapp.com",
+//       databaseURL: "https://financepmparfum-default-rtdb.firebaseio.com",
+//       projectId: "financepmparfum",
+//       storageBucket: "financepmparfum.appspot.com",
+//       messagingSenderId: "170533721727",
+//       appId: "1:170533721727:web:686a09d1a569a4e6b4914a",
+//       );
+// }
+
   //Zuhriddin
 // static const FirebaseOptions web = FirebaseOptions(
 //     apiKey: "AIzaSyCSbFJamYnB1libGN76-XR2vBiSi4xrt7c",
