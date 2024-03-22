@@ -249,7 +249,7 @@ class _SideBarWidgetState extends State<SideBarWidget> {
                           color: kYellowColor,
                         ),
                       ],
-                    ).visible(false),
+                    ),
                   ],
                 ),
               ),

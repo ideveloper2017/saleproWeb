@@ -429,7 +429,7 @@ class _WareHouseListState extends State<WareHouseList> {
                                               const SizedBox(height: 20.0),
                                               productList.when(data: (productSnap) {
                                                 List<WareHouseModel> showAbleProducts = [];
-                                                for (var element in snapShot) {
+                                                 for (var element in snapShot) {
                                                   if (element.warehouseName.removeAllWhiteSpace().toLowerCase().contains(searchItem.toLowerCase()) ||
                                                       element.warehouseName.contains(searchItem)) {
                                                     showAbleProducts.add(element);

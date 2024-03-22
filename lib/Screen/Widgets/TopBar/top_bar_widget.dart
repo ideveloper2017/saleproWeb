@@ -22,6 +22,7 @@ import '../../Inventory Sales/inventory_sales.dart';
 import '../../POS Sale/pos_sale.dart';
 import '../../Product/product.dart';
 import '../../Purchase List/purchase_list.dart';
+import '../../Reports/report_screen.dart';
 import '../Constant Data/constant.dart';
 import 'package:salespro_admin/generated/l10n.dart' as lang;
 
@@ -191,7 +192,7 @@ class _TopBarState extends State<TopBar> {
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: GoogleFonts.poppins(
-                    fontSize: context.width() < 900 ? 25 : context.width() * 0.018,
+                    fontSize: context.width() < 900 ? 20: context.width() * 0.010,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
@@ -363,7 +364,7 @@ class _TopBarState extends State<TopBar> {
                       // Use a map for currency symbols
                       final currencySymbols = {
                         '\$ (US Dollar)': '\$',
-                         'сўм (O`zbekiston)': 'UZS',
+                         'сўм (O`zbekiston)': 'сўм',
                         // Add more currencies as needed
                       };
 
@@ -490,26 +491,26 @@ class TopBarTablate extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Container(
-            //   padding: const EdgeInsets.all(10.0),
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(30.0),
-            //     color: kBlueTextColor,
-            //   ),
-            //   child: Row(
-            //     mainAxisSize: MainAxisSize.min,
-            //     children: [
-            //       const Icon(FeatherIcons.plus, color: kWhiteTextColor, size: 16.0),
-            //       const SizedBox(width: 5.0),
-            //       Text(
-            //         'Stock',
-            //         style: kTextStyle.copyWith(color: kWhiteTextColor),
-            //       ),
-            //     ],
-            //   ),
-            // ).onTap(
-            //       () => Navigator.pushNamed(context, SaleReports.route, arguments: 'Stock Report'),
-            // ),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                color: kBlueTextColor,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(FeatherIcons.plus, color: kWhiteTextColor, size: 16.0),
+                  const SizedBox(width: 5.0),
+                  Text(
+                    'Stock',
+                    style: kTextStyle.copyWith(color: kWhiteTextColor),
+                  ),
+                ],
+              ),
+            ).onTap(
+                  () => Navigator.pushNamed(context, SaleReports.route, arguments: 'Stock Report'),
+            ),
             const SizedBox(
               width: 8.0,
             ),
@@ -618,32 +619,32 @@ class TopBarTablate extends StatelessWidget {
             const SizedBox(
               width: 8.0,
             ),
-            // Container(
-            //   padding: const EdgeInsets.all(10.0),
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(30.0),
-            //     border: Border.all(color: kBlueTextColor),
-            //     color: kWhiteTextColor,
-            //   ),
-            //   child: Row(
-            //     mainAxisSize: MainAxisSize.min,
-            //     children: [
-            //       const Icon(FeatherIcons.plus, color: kBlueTextColor, size: 16.0),
-            //       const SizedBox(width: 5.0),
-            //       Text(
-            //         'Add More',
-            //         style: kTextStyle.copyWith(color: kBlueTextColor),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            // const Padding(
-            //   padding: EdgeInsets.all(8.0),
-            //   child: Icon(
-            //     FeatherIcons.bell,
-            //     color: kTitleColor,
-            //   ),
-            // ),
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                border: Border.all(color: kBlueTextColor),
+                color: kWhiteTextColor,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(FeatherIcons.plus, color: kBlueTextColor, size: 16.0),
+                  const SizedBox(width: 5.0),
+                  Text(
+                    'Add More',
+                    style: kTextStyle.copyWith(color: kBlueTextColor),
+                  ),
+                ],
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(
+                FeatherIcons.bell,
+                color: kTitleColor,
+              ),
+            ),
             userProfileDetails.when(data: (details) {
               return GestureDetector(
                 onTap: () {

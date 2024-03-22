@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:js_interop';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -829,6 +830,7 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController capacityController = TextEditingController(text: '');
   TextEditingController typeController = TextEditingController(text: '');
   TextEditingController warrantyController = TextEditingController(text: '');
+  final TextEditingController _textEditingController = TextEditingController();
 
   GlobalKey<FormState> addProductFormKey = GlobalKey<FormState>();
 
@@ -941,7 +943,7 @@ class _AddProductState extends State<AddProduct> {
                                     //     showDialog(
                                     //       context: context,
                                     //       builder: (context) =>
-                                    //           BulkProductUploadPopup(allProductsCodeList: widget.allProductsCodeList, allProductsNameList: widget.allProductsNameList),
+                                    //           BulkProductUploadPopup(allProductsCodeList: widget.allProductsCodeList, allProductsNameList:[]),
                                     //     );
                                     //   },
                                     //   child: const Row(
@@ -1070,33 +1072,117 @@ class _AddProductState extends State<AddProduct> {
                                                                       focusColor: dropdownItemColor,
                                                                       hoverColor: dropdownItemColor),
                                                                   child: DropdownButtonHideUnderline(
-                                                                      child: DropdownButton<String>(
-                                                                    hint: const Text('Select Category'),
-                                                                    onChanged: (String? value) {
-                                                                      setState(() {
-                                                                        selectedCategories = value!;
-                                                                        for (var element in category) {
-                                                                          if (element.categoryName == selectedCategories) {
-                                                                            isSizedBoxShow = element.size;
-                                                                            isColoredBoxShow = element.color;
-                                                                            isWeightsBoxShow = element.weight;
-                                                                            isCapacityBoxShow = element.capacity;
-                                                                            isTypeBoxShow = element.type;
-                                                                            isWarrantyBoxShow = element.warranty;
-                                                                          }
-                                                                        }
-                                                                        toast(selectedCategories);
-                                                                      });
-                                                                    },
-                                                                    value: selectedCategories,
-                                                                    items: categoryName.map((String items) {
-                                                                      return DropdownMenuItem(
-                                                                        value: items,
-                                                                        child: Text(items),
-                                                                      );
-                                                                    }).toList(),
+                                                                        child: DropdownButton2<String>(
+                                                                          isExpanded: true,
+                                                                          hint: Text(
+                                                                            lang.S.of(context).selectProductBrand,
+                                                                            style: TextStyle(
+                                                                              fontSize: 14,
+                                                                              color: Theme.of(context).hintColor,
+                                                                            ),
+                                                                          ),
+                                                                          items: categoryName.map((String items) {
+                                                                            return DropdownMenuItem(
+                                                                              value: items,
+                                                                              child: Text(items),
+                                                                            );
+                                                                          }).toList(),
+                                                                          value: selectedCategories,
+                                                                          onChanged: (String? value) {
+                                                                            setState(() {
+                                                                              selectedCategories = value!;
+                                                                              for (var element in category) {
+                                                                                if (element.categoryName == selectedCategories) {
+                                                                                  isSizedBoxShow = element.size;
+                                                                                  isColoredBoxShow = element.color;
+                                                                                  isWeightsBoxShow = element.weight;
+                                                                                  isCapacityBoxShow = element.capacity;
+                                                                                  isTypeBoxShow = element.type;
+                                                                                  isWarrantyBoxShow = element.warranty;
+                                                                                }
+                                                                              }
+                                                                              toast(selectedCategories);
+                                                                            });
+                                                                          },
+                                                                          buttonStyleData: const ButtonStyleData(
+                                                                            padding: EdgeInsets.symmetric(horizontal: 16),
+                                                                            height: 40,
+                                                                            width: 200,
+                                                                          ),
+                                                                          dropdownStyleData: const DropdownStyleData(
+                                                                            maxHeight: 200,
+                                                                          ),
+                                                                          menuItemStyleData: const MenuItemStyleData(
+                                                                            height: 40,
+                                                                          ),
+                                                                          dropdownSearchData: DropdownSearchData(
+                                                                            searchController: _textEditingController,
+                                                                            searchInnerWidgetHeight: 150,
+                                                                            searchInnerWidget: Container(
+                                                                              height: 50,
+                                                                              padding: const EdgeInsets.only(
+                                                                                top: 8,
+                                                                                bottom: 4,
+                                                                                right: 8,
+                                                                                left: 8,
+                                                                              ),
+                                                                              child: TextFormField(
+                                                                                expands: true,
+                                                                                maxLines: null,
+                                                                                controller: _textEditingController,
+                                                                                decoration: InputDecoration(
+                                                                                  isDense: true,
+                                                                                  contentPadding: const EdgeInsets.symmetric(
+                                                                                    horizontal: 10,
+                                                                                    vertical: 8,
+                                                                                  ),
+                                                                                  hintText: 'Search for an item...',
+                                                                                  hintStyle: const TextStyle(fontSize: 12),
+                                                                                  border: OutlineInputBorder(
+                                                                                    borderRadius: BorderRadius.circular(8),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                            searchMatchFn: (item, searchValue) {
+                                                                              return item.value.toString().contains(searchValue);
+                                                                            },
+                                                                          ),
+                                                                          //This to clear the search value when you close the menu
+                                                                          onMenuStateChange: (isOpen) {
+                                                                            if (!isOpen) {
+                                                                              _textEditingController.clear();
+                                                                            }
+                                                                          },
+                                                                        ),
+
+                                                                        // hint: const Text('Select Category'),
+
+                                                                    // onChanged: (String? value) {
+                                                                    //   setState(() {
+                                                                    //     selectedCategories = value!;
+                                                                    //     for (var element in category) {
+                                                                    //       if (element.categoryName == selectedCategories) {
+                                                                    //         isSizedBoxShow = element.size;
+                                                                    //         isColoredBoxShow = element.color;
+                                                                    //         isWeightsBoxShow = element.weight;
+                                                                    //         isCapacityBoxShow = element.capacity;
+                                                                    //         isTypeBoxShow = element.type;
+                                                                    //         isWarrantyBoxShow = element.warranty;
+                                                                    //       }
+                                                                    //     }
+                                                                    //     toast(selectedCategories);
+                                                                    //   });
+                                                                    // },
+                                                                    // value: selectedCategories,
+                                                                    // items: categoryName.map((String items) {
+                                                                    //   return DropdownMenuItem(
+                                                                    //     value: items,
+                                                                    //     child: Text(items),
+                                                                    //   );
+                                                                    // }).toList(),
                                                                   )),
-                                                                ),
+                                                                // ),
                                                               );
                                                             },
                                                           ),
@@ -1346,29 +1432,89 @@ class _AddProductState extends State<AddProduct> {
                                                                   contentPadding: const EdgeInsets.all(8.0),
                                                                   floatingLabelBehavior: FloatingLabelBehavior.always,
                                                                   labelText: lang.S.of(context).brand),
+
                                                               child: Theme(
                                                                 data: ThemeData(
                                                                     highlightColor: dropdownItemColor,
                                                                     focusColor: dropdownItemColor,
                                                                     hoverColor: dropdownItemColor),
-                                                                child: DropdownButtonHideUnderline(
-                                                                    child: DropdownButton<String>(
-                                                                  onChanged: (String? value) {
-                                                                    setState(() {
-                                                                      selectedBrand = value!;
-                                                                      toast(selectedBrand);
-                                                                    });
-                                                                  },
-                                                                  hint: Text(lang.S.of(context).selectProductBrand),
-                                                                  value: selectedBrand,
-                                                                  items: brandName.map((String items) {
-                                                                    return DropdownMenuItem(
-                                                                      value: items,
-                                                                      child: Text(items),
-                                                                    );
-                                                                  }).toList(),
-                                                                )),
-                                                              ),
+                                                                 child: DropdownButtonHideUnderline(
+                                                                  child: DropdownButton2<String>(
+                                                                    isExpanded: true,
+                                                                    hint: Text(
+                                                                      lang.S.of(context).selectProductBrand,
+                                                                      style: TextStyle(
+                                                                        fontSize: 14,
+                                                                        color: Theme.of(context).hintColor,
+                                                                      ),
+                                                                    ),
+                                                                    items: brandName.map((String items) {
+                                                                      return DropdownMenuItem(
+                                                                        value: items,
+                                                                        child: Text(items),
+                                                                      );
+                                                                    }).toList(),
+                                                                    value: selectedBrand,
+                                                                    onChanged: (value) {
+                                                                      setState(() {
+                                                                        selectedBrand = value;
+                                                                        toast(selectedBrand);
+                                                                      });
+                                                                    },
+                                                                    buttonStyleData: const ButtonStyleData(
+                                                                      padding: EdgeInsets.symmetric(horizontal: 16),
+                                                                      height: 40,
+                                                                      width: 200,
+                                                                    ),
+                                                                    dropdownStyleData: const DropdownStyleData(
+                                                                      maxHeight: 200,
+                                                                    ),
+                                                                    menuItemStyleData: const MenuItemStyleData(
+                                                                      height: 30,
+                                                                    ),
+                                                                    dropdownSearchData: DropdownSearchData(
+                                                                      searchController: _textEditingController,
+                                                                      searchInnerWidgetHeight: 150,
+                                                                      searchInnerWidget: Container(
+                                                                        height: 50,
+                                                                        padding: const EdgeInsets.only(
+                                                                          top: 8,
+                                                                          bottom: 4,
+                                                                          right: 8,
+                                                                          left: 8,
+                                                                        ),
+                                                                        child: TextFormField(
+                                                                          expands: true,
+                                                                          maxLines: null,
+                                                                          controller: _textEditingController,
+                                                                          decoration: InputDecoration(
+                                                                            isDense: true,
+                                                                            contentPadding: const EdgeInsets.symmetric(
+                                                                              horizontal: 10,
+                                                                              vertical: 8,
+                                                                            ),
+                                                                            hintText: 'Search for an item...',
+                                                                            hintStyle: const TextStyle(fontSize: 12),
+                                                                            border: OutlineInputBorder(
+                                                                              borderRadius: BorderRadius.circular(8),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      searchMatchFn: (item, searchValue) {
+                                                                        return item.value.toString().contains(searchValue);
+                                                                      },
+                                                                    ),
+                                                                    //This to clear the search value when you close the menu
+                                                                    onMenuStateChange: (isOpen) {
+                                                                      if (!isOpen) {
+                                                                        _textEditingController.clear();
+                                                                      }
+                                                                    },
+                                                                  ),
+
+                                                                ),
+                                                                ),
                                                             );
                                                           },
                                                         ),
@@ -1396,8 +1542,6 @@ class _AddProductState extends State<AddProduct> {
                                                           }
                                                         },
                                                         onSaved: (value) {
-
-
                                                           if (value.removeAllWhiteSpace().isEmptyOrNull) {
                                                           //  productCodeController.text = '';
                                                           // } else {
@@ -2018,8 +2162,8 @@ class _AddProductState extends State<AddProduct> {
                                                                       EasyLoading.show(status: 'Loading...', dismissOnTap: false);
                                                                       final DatabaseReference productInformationRef =
                                                                           FirebaseDatabase.instance.ref().child(await getUserID()).child('Products');
-                                                                      var productcode=await productInformationRef.once();
-                                                                      EasyLoading.show(status:productcode.toJSBox.toString() ,dismissOnTap:false) ;
+
+
                                                                       ProductModel productModel = ProductModel(
                                                                         productNameController.text,
                                                                         selectedCategories ?? '',

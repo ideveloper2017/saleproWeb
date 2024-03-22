@@ -73,13 +73,13 @@ class DefaultFirebaseOptions {
 
 //Umarxon
 //   static const FirebaseOptions web = FirebaseOptions(
-//       apiKey: "AIzaSyAroa-pXdsP48Or0Jto27jujJDKTc_NJLI",
-//       authDomain: "financepmparfum.firebaseapp.com",
-//       databaseURL: "https://financepmparfum-default-rtdb.firebaseio.com",
-//       projectId: "financepmparfum",
-//       storageBucket: "financepmparfum.appspot.com",
-//       messagingSenderId: "170533721727",
-//       appId: "1:170533721727:web:686a09d1a569a4e6b4914a",
+//       apiKey: "AIzaSyBt1UUtViLgtDU8orqCGDfySTbVX77V63I",
+//       authDomain: "bravoparfum-66ca7.firebaseapp.com",
+//       databaseURL: "https://bravoparfum-66ca7-default-rtdb.firebaseio.com",
+//       projectId: "bravoparfum-66ca7",
+//       storageBucket: "bravoparfum-66ca7.appspot.com",
+//       messagingSenderId: "455269009142",
+//       appId: "1:455269009142:web:5c8e44f4e2332c54d1ced7",
 //       );
 // }
 

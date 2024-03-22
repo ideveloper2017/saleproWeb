@@ -28,6 +28,7 @@ import '../Widgets/Footer/footer.dart';
 import '../Widgets/Sidebar/sidebar_widget.dart';
 import '../Widgets/TopBar/top_bar_widget.dart';
 import 'WarebasedProduct.dart';
+import 'bulk.dart';
 import 'edit_product.dart';
 
 class Product extends StatefulWidget {
@@ -760,7 +761,37 @@ class _ProductState extends State<Product> {
                                                   ],
                                               )
                                             ).onTap(() async=>exportXLS(showAbleProducts)),
-                                            const SizedBox(width: 10),
+                                            const SizedBox(width: 5.0),
+                                            Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: kWhiteTextColor,border: Border.all(color: kBorderColorTextField)),
+                                              child: Row(
+                                                children: [
+                                                        Icon(MdiIcons
+                                                            .microsoftExcel,
+                                                            size: 18.0,
+                                                            color: CupertinoColors
+                                                                .activeGreen),
+                                                        const SizedBox(
+                                                            width: 5.0),
+                                                        Text(
+                                                          'Import XLS',
+                                                          style: kTextStyle
+                                                              .copyWith(
+                                                              color: kTitleColor),
+                                                        ),
+                                                      ],
+                                                    ),
+                                             ).onTap(() async=>{
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      BulkProductUploadPopup(
+                                                          allProductsCodeList: allProductsCodeList,
+                                                          allProductsNameList: allProductsNameList),
+                                                )
+                                            }),
+                                            const SizedBox(width: 5.0),
                                             ///________________add_productS________________________________________________
                                             InkWell(
                                               onTap: () => Navigator.pushNamed(context, BarcodeGenerate.route),
