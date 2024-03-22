@@ -830,7 +830,7 @@ class _AddProductState extends State<AddProduct> {
   TextEditingController capacityController = TextEditingController(text: '');
   TextEditingController typeController = TextEditingController(text: '');
   TextEditingController warrantyController = TextEditingController(text: '');
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController(text:'');
 
   GlobalKey<FormState> addProductFormKey = GlobalKey<FormState>();
 
@@ -1075,7 +1075,7 @@ class _AddProductState extends State<AddProduct> {
                                                                         child: DropdownButton2<String>(
                                                                           isExpanded: true,
                                                                           hint: Text(
-                                                                            lang.S.of(context).selectProductBrand,
+                                                                            'Select Category',
                                                                             style: TextStyle(
                                                                               fontSize: 14,
                                                                               color: Theme.of(context).hintColor,
@@ -1106,17 +1106,17 @@ class _AddProductState extends State<AddProduct> {
                                                                           },
                                                                           buttonStyleData: const ButtonStyleData(
                                                                             padding: EdgeInsets.symmetric(horizontal: 16),
-                                                                            height: 40,
+                                                                            height: 50,
                                                                             width: 200,
                                                                           ),
                                                                           dropdownStyleData: const DropdownStyleData(
-                                                                            maxHeight: 200,
+                                                                            maxHeight: 550,
                                                                           ),
                                                                           menuItemStyleData: const MenuItemStyleData(
-                                                                            height: 40,
+                                                                            height: 30,
                                                                           ),
                                                                           dropdownSearchData: DropdownSearchData(
-                                                                            searchController: _textEditingController,
+                                                                            searchController: itemCategoryController,
                                                                             searchInnerWidgetHeight: 150,
                                                                             searchInnerWidget: Container(
                                                                               height: 50,
@@ -1129,14 +1129,14 @@ class _AddProductState extends State<AddProduct> {
                                                                               child: TextFormField(
                                                                                 expands: true,
                                                                                 maxLines: null,
-                                                                                controller: _textEditingController,
+                                                                                controller: itemCategoryController,
                                                                                 decoration: InputDecoration(
                                                                                   isDense: true,
                                                                                   contentPadding: const EdgeInsets.symmetric(
                                                                                     horizontal: 10,
                                                                                     vertical: 8,
                                                                                   ),
-                                                                                  hintText: 'Search for an item...',
+                                                                                  hintText: 'Element qidirish...',
                                                                                   hintStyle: const TextStyle(fontSize: 12),
                                                                                   border: OutlineInputBorder(
                                                                                     borderRadius: BorderRadius.circular(8),
@@ -1145,13 +1145,13 @@ class _AddProductState extends State<AddProduct> {
                                                                               ),
                                                                             ),
                                                                             searchMatchFn: (item, searchValue) {
-                                                                              return item.value.toString().contains(searchValue);
+                                                                              return item.value.toString().toLowerCase().contains(searchValue.toLowerCase());
                                                                             },
                                                                           ),
                                                                           //This to clear the search value when you close the menu
                                                                           onMenuStateChange: (isOpen) {
                                                                             if (!isOpen) {
-                                                                              _textEditingController.clear();
+                                                                              itemCategoryController.clear();
                                                                             }
                                                                           },
                                                                         ),
@@ -1463,17 +1463,17 @@ class _AddProductState extends State<AddProduct> {
                                                                     },
                                                                     buttonStyleData: const ButtonStyleData(
                                                                       padding: EdgeInsets.symmetric(horizontal: 16),
-                                                                      height: 40,
+                                                                      height: 50,
                                                                       width: 200,
                                                                     ),
                                                                     dropdownStyleData: const DropdownStyleData(
-                                                                      maxHeight: 200,
+                                                                      maxHeight: 550,
                                                                     ),
                                                                     menuItemStyleData: const MenuItemStyleData(
                                                                       height: 30,
                                                                     ),
                                                                     dropdownSearchData: DropdownSearchData(
-                                                                      searchController: _textEditingController,
+                                                                      searchController: brandNameController,
                                                                       searchInnerWidgetHeight: 150,
                                                                       searchInnerWidget: Container(
                                                                         height: 50,
@@ -1486,14 +1486,14 @@ class _AddProductState extends State<AddProduct> {
                                                                         child: TextFormField(
                                                                           expands: true,
                                                                           maxLines: null,
-                                                                          controller: _textEditingController,
+                                                                          controller: brandNameController,
                                                                           decoration: InputDecoration(
                                                                             isDense: true,
                                                                             contentPadding: const EdgeInsets.symmetric(
                                                                               horizontal: 10,
                                                                               vertical: 8,
                                                                             ),
-                                                                            hintText: 'Search for an item...',
+                                                                            hintText: 'Element qidirish...',
                                                                             hintStyle: const TextStyle(fontSize: 12),
                                                                             border: OutlineInputBorder(
                                                                               borderRadius: BorderRadius.circular(8),
@@ -1502,13 +1502,13 @@ class _AddProductState extends State<AddProduct> {
                                                                         ),
                                                                       ),
                                                                       searchMatchFn: (item, searchValue) {
-                                                                        return item.value.toString().contains(searchValue);
+                                                                        return item.value.toString().toLowerCase().contains(searchValue.toLowerCase());
                                                                       },
                                                                     ),
                                                                     //This to clear the search value when you close the menu
                                                                     onMenuStateChange: (isOpen) {
                                                                       if (!isOpen) {
-                                                                        _textEditingController.clear();
+                                                                        brandNameController.clear();
                                                                       }
                                                                     },
                                                                   ),

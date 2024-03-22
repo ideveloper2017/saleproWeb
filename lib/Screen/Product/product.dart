@@ -16,6 +16,7 @@ import 'package:salespro_admin/Screen/Product/add_product.dart';
 import 'package:salespro_admin/Screen/Product/product%20barcode/barcode_generate.dart';
 import 'package:salespro_admin/commas.dart';
 import 'package:salespro_admin/currency.dart';
+import 'package:salespro_admin/excel/ExportExcel.dart';
 import 'package:salespro_admin/model/product_model.dart';
 import 'package:salespro_admin/generated/l10n.dart' as lang;
 import '../../Provider/product_provider.dart';
@@ -1248,16 +1249,17 @@ class _ProductState extends State<Product> {
 
   Future<void> exportXLS(List<ProductModel> product) async{
 
-    print(product.map((e)=>jsonEncode({"productCode":'${e.productCode}',
-                            'productName':'${e.productName}',
-                            'Category':'${e.productCategory}',
-                            'Brand':'${e.brandName}',
-                            'Stock':'${e.productStock}',
-                            'Purchase_Price':'${e.productPurchasePrice}',
-                            'Sales_Price':'${e.productSalePrice}',
-                            'Dealer_Price':'${e.productDealerPrice}',
-                            'Wholesale_Price':'${e.productWholeSalePrice}',
-       }))
-        .toList(growable:true));
+    ExportExcel().exportXLS(product);
+    // print(product.map((e)=>jsonEncode({"productCode":'${e.productCode}',
+    //                         'productName':'${e.productName}',
+    //                         'Category':'${e.productCategory}',
+    //                         'Brand':'${e.brandName}',
+    //                         'Stock':'${e.productStock}',
+    //                         'Purchase_Price':'${e.productPurchasePrice}',
+    //                         'Sales_Price':'${e.productSalePrice}',
+    //                         'Dealer_Price':'${e.productDealerPrice}',
+    //                         'Wholesale_Price':'${e.productWholeSalePrice}',
+    //    }))
+    //     .toList(growable:true));
   }
 }
