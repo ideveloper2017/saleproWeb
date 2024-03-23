@@ -11,10 +11,10 @@
 String currency = localCurrency;
 
 
-String localCurrency = '\$';
+String localCurrency = '\сўм';
 
 List<String> items = [
-  '\$ (US Dollar)',
-  '\cўм (Uzbekistan)',
+    '\cўм (Uzbekistan)',
+    '\$ (US Dollar)',
 
 ];

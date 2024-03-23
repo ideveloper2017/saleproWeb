@@ -51,9 +51,9 @@ class _ShowDuePaymentPopUpState extends State<ShowDuePaymentPopUp> {
     'Bank',
     'Due',
     'B-kash',
-    'Nagad',
-    'Rocket',
-    'DBBL',
+    // 'Nagad',
+    // 'Rocket',
+    // 'DBBL',
   ];
   String selectedPaymentOption = 'Cash';
 
@@ -385,7 +385,7 @@ class _ShowDuePaymentPopUpState extends State<ShowDuePaymentPopUp> {
                                                   saleButtonClicked = true;
                                                 });
                                                 EasyLoading.show(status: 'Loading...', dismissOnTap: false);
-                                                DatabaseReference ref = FirebaseDatabase.instance.ref("${await getUserID()}/Due Transaction");
+                                                  DatabaseReference ref = FirebaseDatabase.instance.ref("${await getUserID()}/Due Transaction");
 
                                                 dueTransactionModel.totalDue = dueAmount;
                                                 dueTransactionModel.sellerName = isSubUser ? constSubUserTitle : 'Admin';

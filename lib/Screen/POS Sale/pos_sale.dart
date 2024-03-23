@@ -888,7 +888,6 @@ class _PosSaleState extends State<PosSale> {
                                               hoverColor: dropdownItemColor
                                           ),
                                           child: DropdownButtonHideUnderline(
-
                                             child: getWare(list: warehouse ?? []),
                                           ),
                                         ),

@@ -341,7 +341,6 @@ class _EditCustomerState extends State<EditCustomer> {
                                                           validator: (value) {
                                                             return null;
                                                           },
-                                                          readOnly: true,
                                                           initialValue: widget.customerModel.dueAmount,
                                                           cursorColor: kTitleColor,
                                                           decoration: kInputDecoration.copyWith(

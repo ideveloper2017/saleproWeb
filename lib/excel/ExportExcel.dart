@@ -13,32 +13,113 @@ class ExportExcel{
     var excel = Excel.createExcel();
     final Sheet sheet = excel[excel.getDefaultSheet()!];
 
-    var columnIterables = ['A', 'B', 'C', 'D', 'E'];
-    int columnIndex = 0;
-    var columnIterableSheet =sheet;
-    columnIterables.forEach((columnValue) {
-      sheet.cell(CellIndex.indexByColumnRow(
-        rowIndex: columnIterableSheet.maxRows,
-        columnIndex: columnIndex,
-      ))
-        ..value = TextCellValue(columnValue);
-    });
+
 
     sheet.cell(CellIndex.indexByColumnRow(
       rowIndex: 0,
-      columnIndex: columnIndex,
+      columnIndex: 0,
     )).value=TextCellValue('ProductCode');
 
     sheet.cell(CellIndex.indexByColumnRow(
-      rowIndex: 1,
-      columnIndex: columnIndex,
-    )).value=TextCellValue('ProductName');
+      rowIndex: 0,
+      columnIndex:1 ,
+    )).value=TextCellValue('Product Name');
 
-    products.map((element)=> {
-      sheet
-          .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
-          .value = TextCellValue(getRandString());
-    });
+    sheet.cell(CellIndex.indexByColumnRow(
+      rowIndex: 0,
+      columnIndex:2 ,
+    )).value=TextCellValue('Product Stock');
+
+    sheet.cell(CellIndex.indexByColumnRow(
+      rowIndex: 0,
+      columnIndex:3 ,
+    )).value=TextCellValue('Purchase Price');
+
+    sheet.cell(CellIndex.indexByColumnRow(
+      rowIndex: 0,
+      columnIndex:4,
+    )).value=TextCellValue('Wholesale Price');
+
+    sheet.cell(CellIndex.indexByColumnRow(
+      rowIndex: 0,
+      columnIndex:5,
+    )).value=TextCellValue('Sale Price');
+
+    sheet.cell(CellIndex.indexByColumnRow(
+      rowIndex: 0,
+      columnIndex:6,
+    )).value=TextCellValue('Dealer Price');
+
+    sheet.cell(CellIndex.indexByColumnRow(
+      rowIndex: 0,
+      columnIndex:7,
+    )).value=TextCellValue('Category');
+
+    sheet.cell(CellIndex.indexByColumnRow(
+      rowIndex: 0,
+      columnIndex:8,
+    )).value=TextCellValue('Brand');
+
+    sheet.cell(CellIndex.indexByColumnRow(
+      rowIndex: 0,
+      columnIndex:9,
+    )).value=TextCellValue('Units');
+
+
+
+
+
+    // var row=1;
+    for (var row = 0; row < products.length; row++)
+      {
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row+1))
+            .value = TextCellValue(products[row].productCode.toString());
+
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row+1))
+            .value = TextCellValue(products[row].productName.toString());
+
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 2, rowIndex: row+1))
+            .value = TextCellValue(products[row].productStock.toString());
+
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 3, rowIndex: row+1))
+            .value = TextCellValue(products[row].productPurchasePrice.toString());
+
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 4, rowIndex: row+1))
+            .value = TextCellValue(products[row].productSalePrice.toString());
+
+
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 5, rowIndex: row+1))
+            .value = TextCellValue(products[row].productWholeSalePrice.toString());
+
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 6, rowIndex: row+1))
+            .value = TextCellValue(products[row].productDealerPrice.toString());
+
+
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 7, rowIndex: row+1))
+            .value = TextCellValue(products[row].productCategory.toString());
+
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 8, rowIndex: row+1))
+            .value = TextCellValue(products[row].brandName.toString());
+
+        sheet
+            .cell(CellIndex.indexByColumnRow(columnIndex: 9, rowIndex: row+1))
+            .value = TextCellValue(products[row].productUnit.toString());
+      }
+
+
+      // sheet
+      //     .cell(CellIndex.indexByColumnRow(columnIndex: 1, rowIndex: row++))
+      //     .value = TextCellValue(element.productCode)
+
     // for (var row = 0; row < 100; row++) {
     //   sheet
     //       .cell(CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: row))
