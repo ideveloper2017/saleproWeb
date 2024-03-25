@@ -72,15 +72,27 @@ class DefaultFirebaseOptions {
 // }
 
 //Umarxon
-  static const FirebaseOptions web = FirebaseOptions(
-      apiKey: "AIzaSyBt1UUtViLgtDU8orqCGDfySTbVX77V63I",
-      authDomain: "bravoparfum-66ca7.firebaseapp.com",
-      databaseURL: "https://bravoparfum-66ca7-default-rtdb.firebaseio.com",
-      projectId: "bravoparfum-66ca7",
-      storageBucket: "bravoparfum-66ca7.appspot.com",
-      messagingSenderId: "455269009142",
-      appId: "1:455269009142:web:5c8e44f4e2332c54d1ced7",
-      );
+//   static const FirebaseOptions web = FirebaseOptions(
+//       apiKey: "AIzaSyBt1UUtViLgtDU8orqCGDfySTbVX77V63I",
+//       authDomain: "bravoparfum-66ca7.firebaseapp.com",
+//       databaseURL: "https://bravoparfum-66ca7-default-rtdb.firebaseio.com",
+//       projectId: "bravoparfum-66ca7",
+//       storageBucket: "bravoparfum-66ca7.appspot.com",
+//       messagingSenderId: "455269009142",
+//       appId: "1:455269009142:web:5c8e44f4e2332c54d1ced7",
+//       );
+// }
+
+//Test Demo
+static const FirebaseOptions web = FirebaseOptions(
+    apiKey: "AIzaSyBZ0pjkJxE7wsn36zuYtnen-NO7gX5u3qA",
+    authDomain: "fir-dbdemo-4c345.firebaseapp.com",
+    databaseURL: "https://fir-dbdemo-4c345-default-rtdb.firebaseio.com",
+    projectId: "fir-dbdemo-4c345",
+    storageBucket: "fir-dbdemo-4c345.appspot.com",
+    messagingSenderId: "35245659141",
+    appId: "1:35245659141:web:9b0cd81db9d76f3ebab86c",
+);
 }
 
   //Zuhriddin

@@ -28,9 +28,10 @@ import '../../subscription.dart';
 import '../Widgets/Constant Data/constant.dart';
 
 class ShowPaymentPopUp extends StatefulWidget {
-  const ShowPaymentPopUp({super.key, required this.transitionModel, required this.isFromQuotation});
+  const ShowPaymentPopUp({super.key, required this.transitionModel, required this.isFromQuotation,required this.previousDue});
   final SaleTransactionModel transitionModel;
   final bool isFromQuotation;
+  final String previousDue;
 
   @override
   State<ShowPaymentPopUp> createState() => _ShowPaymentPopUpState();
@@ -38,6 +39,7 @@ class ShowPaymentPopUp extends StatefulWidget {
 
 class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
   bool saleButtonClicked = false;
+  String previousDue = "0";
   SaleTransactionModel checkLossProfit({required SaleTransactionModel transitionModel}) {
     int totalQuantity = 0;
     double lossProfit = 0;
@@ -126,20 +128,36 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
   TextEditingController payingAmountController = TextEditingController();
   TextEditingController changeAmountController = TextEditingController();
   TextEditingController dueAmountController = TextEditingController();
+  TextEditingController previousdueAmountController = TextEditingController();
+  TextEditingController totalDueAmountController = TextEditingController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     setState(() {
+
+      previousdueAmountController.text=widget.previousDue;
       double paidAmount = double.tryParse(payingAmountController.text)??0;
+
+
+
       if (paidAmount > widget.transitionModel.totalAmount!.toDouble()) {
         changeAmountController.text = (paidAmount - widget.transitionModel.totalAmount!.toDouble()).toString();
         dueAmountController.text = '0';
+
       } else {
         dueAmountController.text = (widget.transitionModel.totalAmount!.toDouble() - paidAmount).abs().toString();
         changeAmountController.text = '0';
+        totalDueAmountController.text = (widget.transitionModel.dueAmount!.toInt() + (paidAmount).toInt()).toString();
       }
+
+      if (paidAmount > widget.transitionModel.dueAmount!.toDouble()) {
+        totalDueAmountController.text = ((widget.transitionModel.totalAmount!.toDouble() - paidAmount)-widget.transitionModel.dueAmount!.toInt()).abs().toString();
+      } else {
+        totalDueAmountController.text = (widget.transitionModel.dueAmount!.toInt() +  (widget.transitionModel.totalAmount!.toInt() + (paidAmount).toInt())).toString();
+      }
+
     });
   }
 
@@ -210,6 +228,32 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                           SizedBox(
                                             width: 200,
                                             child: Text(
+                                              lang.S.of(context).previousDue,
+                                              style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          SizedBox(
+                                            width: context.width() < 750 ? 170 : context.width() * 0.22,
+                                            child: AppTextField(
+                                              readOnly: true,
+                                              controller: previousdueAmountController,
+                                              cursorColor: kTitleColor,
+                                              textFieldType: TextFieldType.NAME,
+                                              decoration: kInputDecoration.copyWith(
+                                                hintText: lang.S.of(context).previousDue,
+                                                hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10.0),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 200,
+                                            child: Text(
                                               lang.S.of(context).payingAmount,
                                               style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
                                             ),
@@ -222,12 +266,19 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                               onChanged: (value) {
                                                 setState(() {
                                                   double paidAmount = double.parse(value);
+                                                  double paidBalance=0;
                                                   if (paidAmount > widget.transitionModel.totalAmount!.toDouble()) {
-                                                    changeAmountController.text = (paidAmount - widget.transitionModel.totalAmount!.toDouble()).toString();
-                                                    dueAmountController.text = '0';
-                                                  } else {
-                                                    dueAmountController.text = (widget.transitionModel.totalAmount!.toDouble() - paidAmount).abs().toStringAsFixed(2);
+                                                    paidBalance=(paidAmount - widget.transitionModel.totalAmount!.toDouble());
+                                                    changeAmountController.text = paidBalance.toString();
+                                                    dueAmountController.text = paidBalance.toString();
+                                                    totalDueAmountController.text = (paidBalance-widget.transitionModel.dueAmount!.toInt()).abs().toString();
+                                                  } else  {
+                                                    paidBalance=(widget.transitionModel.totalAmount!.toDouble() - paidAmount).abs();
+                                                    dueAmountController.text = paidBalance.toStringAsFixed(2);
+
                                                     changeAmountController.text = '0';
+                                                    totalDueAmountController.text = (widget.transitionModel.dueAmount!.toInt()+paidBalance).abs().toString();
+
                                                   }
                                                 });
                                               },
@@ -241,7 +292,7 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                           ),
                                         ],
                                       ),
-                                      const SizedBox(height: 10.0),
+                                      // const SizedBox(height: 10.0),
                                       Row(
                                         children: [
                                           SizedBox(
@@ -266,7 +317,7 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                             ),
                                           ),
                                         ],
-                                      ),
+                                      ).visible(false),
                                       const SizedBox(height: 10.0),
                                       Row(
                                         children: [
@@ -282,6 +333,32 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                             width: context.width() < 750 ? 170 : context.width() * 0.22,
                                             child: AppTextField(
                                               controller: dueAmountController,
+                                              readOnly: true,
+                                              cursorColor: kTitleColor,
+                                              textFieldType: TextFieldType.NAME,
+                                              decoration: kInputDecoration.copyWith(
+                                                hintText: lang.S.of(context).dueAmount,
+                                                hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10.0),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 200,
+                                            child: Text(
+                                              lang.S.of(context).totalDue,
+                                              style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          SizedBox(
+                                            width: context.width() < 750 ? 170 : context.width() * 0.22,
+                                            child: AppTextField(
+                                              controller: totalDueAmountController,
                                               readOnly: true,
                                               cursorColor: kTitleColor,
                                               textFieldType: TextFieldType.NAME,
@@ -468,12 +545,20 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                                     var data1 = await dueUpdateRef.child('$key/due').once();
                                                     int previousDue = data1.snapshot.value.toString().toInt();
 
-                                                    int totalDue = previousDue + widget.transitionModel.dueAmount!.toInt();
+                                                    double paidAmount = double.tryParse(payingAmountController.text)??0;
+                                                    int totalDue =0;
+
+                                                    if (paidAmount > widget.transitionModel.totalAmount!.toDouble()) {
+                                                      totalDue=((paidAmount-widget.transitionModel.totalAmount!.toDouble())-previousDue.toInt()).abs().toInt();
+                                                      totalDueAmountController.text = totalDue.toString();
+                                                    } else {
+                                                      totalDue=((widget.transitionModel.totalAmount!.toInt() + (paidAmount).toInt())+previousDue.toInt()).abs().toInt();
+                                                      totalDueAmountController.text =totalDue.toString();
+                                                    }
                                                     dueUpdateRef.child(key!).update({'due': '$totalDue'});
                                                   }
 
                                                   ///________update_all_provider___________________________________________________
-
                                                   consumerRef.refresh(allCustomerProvider);
                                                   consumerRef.refresh(transitionProvider);
                                                   consumerRef.refresh(productProvider);
@@ -481,11 +566,8 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                                   consumerRef.refresh(dueTransactionProvider);
                                                   consumerRef.refresh(profileDetailsProvider);
                                                   consumerRef.refresh(dailyTransactionProvider);
-
                                                   EasyLoading.showSuccess('Sale Successfully Done');
-
-                                                  await GeneratePdfAndPrint()
-                                                      .printSaleInvoice(personalInformationModel: data, saleTransactionModel: widget.transitionModel, context: context);
+                                                  await GeneratePdfAndPrint().printSaleInvoice(personalInformationModel: data, saleTransactionModel: widget.transitionModel, context: context);
                                                 } catch (e) {
                                                   setState(() {
                                                     saleButtonClicked = false;
@@ -756,7 +838,7 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                             ),
                                           ],
                                         ),
-                                      ),
+                                      ).visible(false),
 
                                       ///___________service_________________________________________________________
                                       Container(
@@ -800,7 +882,7 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                             ),
                                           ],
                                         ),
-                                      ),
+                                      ).visible(false),
 
                                       ///______________grand_total___________________________________________________
                                       Container(

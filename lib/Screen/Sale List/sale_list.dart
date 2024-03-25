@@ -170,13 +170,14 @@ class _SaleListState extends State<SaleList> {
                                                     child: Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: [
-                                                        const SizedBox(width: 50, child: Text('S.L')),
-                                                        SizedBox(width: 78, child: Text(lang.S.of(context).date)),
+                                                        const SizedBox(width: 30, child: Text('S.L')),
                                                         SizedBox(width: 50, child: Text(lang.S.of(context).invoice)),
-                                                        SizedBox(width: 180, child: Text(lang.S.of(context).partyName)),
-                                                        SizedBox(width: 100, child: Text(lang.S.of(context).paymentType)),
-                                                        SizedBox(width: 70, child: Text(lang.S.of(context).amount)),
+                                                        SizedBox(width: 68, child: Text(lang.S.of(context).date)),
+                                                        SizedBox(width: 80, child: Text(lang.S.of(context).partyName)),
+                                                        SizedBox(width: 80, child: Text(lang.S.of(context).paymentType)),
+                                                        SizedBox(width: 70, child: Text(lang.S.of(context).sAmount)),
                                                         SizedBox(width: 70, child: Text(lang.S.of(context).due)),
+                                                        SizedBox(width: 70, child: Text(lang.S.of(context).payment)),
                                                         SizedBox(width: 50, child: Text(lang.S.of(context).status)),
                                                         const SizedBox(width: 30, child: Icon(FeatherIcons.settings)),
                                                       ],
@@ -198,13 +199,17 @@ class _SaleListState extends State<SaleList> {
                                                                 children: [
                                                                   ///______________S.L__________________________________________________
                                                                   SizedBox(
-                                                                    width: 50,
+                                                                    width: 30,
                                                                     child: Text((index + 1).toString(), style: kTextStyle.copyWith(color: kGreyTextColor)),
                                                                   ),
-
+                                                                  SizedBox(
+                                                                    width: 50,
+                                                                    child: Text(showAbleSaleTransactions[index].invoiceNumber,
+                                                                        maxLines: 2, overflow: TextOverflow.ellipsis, style: kTextStyle.copyWith(color: kGreyTextColor)),
+                                                                  ),
                                                                   ///______________Date__________________________________________________
                                                                   SizedBox(
-                                                                    width: 78,
+                                                                    width: 88,
                                                                     child: Text(
                                                                       showAbleSaleTransactions[index].purchaseDate.substring(0, 10),
                                                                       overflow: TextOverflow.ellipsis,
@@ -214,15 +219,10 @@ class _SaleListState extends State<SaleList> {
                                                                   ),
 
                                                                   ///____________Invoice_________________________________________________
-                                                                  SizedBox(
-                                                                    width: 50,
-                                                                    child: Text(showAbleSaleTransactions[index].invoiceNumber,
-                                                                        maxLines: 2, overflow: TextOverflow.ellipsis, style: kTextStyle.copyWith(color: kGreyTextColor)),
-                                                                  ),
 
                                                                   ///______Party Name___________________________________________________________
                                                                   SizedBox(
-                                                                    width: 180,
+                                                                    width: 80,
                                                                     child: Text(
                                                                       showAbleSaleTransactions[index].customerName,
                                                                       style: kTextStyle.copyWith(color: kGreyTextColor),
@@ -234,7 +234,7 @@ class _SaleListState extends State<SaleList> {
                                                                   ///___________Party Type______________________________________________
 
                                                                   SizedBox(
-                                                                    width: 100,
+                                                                    width: 80,
                                                                     child: Text(
                                                                       showAbleSaleTransactions[index].paymentType.toString(),
                                                                       style: kTextStyle.copyWith(color: kGreyTextColor),

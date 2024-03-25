@@ -13,6 +13,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:nb_utils/nb_utils.dart';
 import 'package:salespro_admin/generated/l10n.dart' as lang;
 import '../../Provider/customer_provider.dart';
+import '../../commas.dart';
 import '../../const.dart';
 import '../../model/customer_model.dart';
 import '../Widgets/Constant Data/button_global.dart';
@@ -47,6 +48,8 @@ class _EditCustomerState extends State<EditCustomer> {
     });
   }
 
+  TextEditingController customerPreviousDueController = TextEditingController();
+  String openingBalance = '';
   String profilePicture = '';
 
   Uint8List? image;
@@ -341,7 +344,15 @@ class _EditCustomerState extends State<EditCustomer> {
                                                           validator: (value) {
                                                             return null;
                                                           },
-                                                          initialValue: widget.customerModel.dueAmount,
+                                                          onChanged: (value) {
+                                                            openingBalance = value.replaceAll(',', '');
+                                                            var formattedText = myFormat.format(int.parse(openingBalance));
+                                                            customerPreviousDueController.value = customerPreviousDueController.value.copyWith(
+                                                              text: formattedText,
+                                                              selection: TextSelection.collapsed(offset: formattedText.length),
+                                                            );
+                                                          },
+                                                         initialValue: widget.customerModel.dueAmount,
                                                           cursorColor: kTitleColor,
                                                           decoration: kInputDecoration.copyWith(
                                                             labelText: lang.S.of(context).openingBalance,
@@ -415,9 +426,9 @@ class _EditCustomerState extends State<EditCustomer> {
                                                                    profilePicture: profilePicture,
                                                                    emailAddress: customerEmailController.text,
                                                                    customerAddress: customerAddressController.text,
-                                                                   dueAmount: widget.customerModel.dueAmount,
-                                                                   remainedBalance: widget.customerModel.remainedBalance,
-                                                                   openingBalance: widget.customerModel.openingBalance,
+                                                                   dueAmount: openingBalance,
+                                                                   remainedBalance: openingBalance,
+                                                                   openingBalance: openingBalance,
                                                                  );
 
                                                                  ///___________update_customer_________________________________________________________

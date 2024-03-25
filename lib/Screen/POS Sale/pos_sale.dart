@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:date_time_format/date_time_format.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -74,8 +75,9 @@ class _PosSaleState extends State<PosSale> {
   String? invoiceNumber;
   String previousDue = "0";
   FocusNode nameFocus = FocusNode();
+  TextEditingController itemCategoryController = TextEditingController();
 
-  DropdownButton<String> getResult(List<CustomerModel> model) {
+  DropdownButton2<String> getResult(List<CustomerModel> model) {
     List<DropdownMenuItem<String>> dropDownItems = [const DropdownMenuItem(value: 'Guest', child: Text('Guest'))];
     for (var des in model) {
       var item = DropdownMenuItem(
@@ -84,26 +86,85 @@ class _PosSaleState extends State<PosSale> {
       );
       dropDownItems.add(item);
     }
-    return DropdownButton(
+    return DropdownButton2<String>(
+      isExpanded: true,
+      hint: Text(
+        'Select Category',
+        style: TextStyle(
+          fontSize: 14,
+          color: Theme.of(context).hintColor,
+        ),
+      ),
       items: dropDownItems,
       value: selectedUserId,
       onChanged: (value) {
-        setState(() {
-          selectedUserId = value!;
-          for (var element in model) {
-            if (element.phoneNumber == selectedUserId) {
-              selectedUserName = element;
-              previousDue = element.dueAmount;
-              selectedCustomerType == element.type ? null : {selectedCustomerType = element.type, cartList.clear()};
-            } else if (selectedUserId == 'Guest') {
-              previousDue = '0';
-              selectedCustomerType = 'Retailer';
+          setState(() {
+            selectedUserId = value!;
+            for (var element in model) {
+              if (element.phoneNumber == selectedUserId) {
+                selectedUserName = element;
+                previousDue = element.dueAmount;
+                selectedCustomerType == element.type ? null : {selectedCustomerType = element.type, cartList.clear()};
+              } else if (selectedUserId == 'Guest') {
+                previousDue = '0';
+                selectedCustomerType = 'Retailer';
+              }
             }
-          }
-          invoiceNumber = '';
-        });
+            invoiceNumber = '';
+          });
+      },
+      buttonStyleData: const ButtonStyleData(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        height: 50,
+        width: 200,
+      ),
+      dropdownStyleData: const DropdownStyleData(
+        maxHeight: 550,
+      ),
+      menuItemStyleData: const MenuItemStyleData(
+        height: 30,
+      ),
+      dropdownSearchData: DropdownSearchData(
+        searchController: itemCategoryController,
+        searchInnerWidgetHeight: 150,
+        searchInnerWidget: Container(
+          height: 50,
+          padding: const EdgeInsets.only(
+            top: 8,
+            bottom: 4,
+            right: 8,
+            left: 8,
+          ),
+          child: TextFormField(
+            expands: true,
+            maxLines: null,
+            controller: itemCategoryController,
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 8,
+              ),
+              hintText: 'Element qidirish...',
+              hintStyle: const TextStyle(fontSize: 12),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+        ),
+        searchMatchFn: (item, searchValue) {
+          return item.value.toString().toLowerCase().contains(searchValue.toLowerCase());
+        },
+      ),
+      //This to clear the search value when you close the menu
+      onMenuStateChange: (isOpen) {
+        if (!isOpen) {
+          itemCategoryController.clear();
+        }
       },
     );
+
   }
 
   dynamic productPriceChecker({required ProductModel product, required String customerType}) {
@@ -1180,6 +1241,7 @@ class _PosSaleState extends State<PosSale> {
                                                     ),
                                                   ),
                                                   ListView.builder(
+                                                    reverse: true,
                                                     shrinkWrap: true,
                                                     physics: const NeverScrollableScrollPhysics(),
                                                     itemCount: cartList.length,
@@ -1697,7 +1759,7 @@ class _PosSaleState extends State<PosSale> {
                                                       ],
                                                     ),
                                                   ],
-                                                ),
+                                                ).visible(false),
 
                                                 const SizedBox(height: 20.0),
 
@@ -1929,12 +1991,11 @@ class _PosSaleState extends State<PosSale> {
                                                                 customerImage: selectedUserName.profilePicture,
                                                                 customerAddress: selectedUserName.customerAddress,
                                                                 customerPhone: selectedUserName.phoneNumber,
-                                                                invoiceNumber:
-                                                                    widget.quotation == null ? data.saleInvoiceCounter.toString() : widget.quotation!.invoiceNumber,
+                                                                invoiceNumber: widget.quotation == null ? data.saleInvoiceCounter.toString() : widget.quotation!.invoiceNumber,
                                                                 purchaseDate: DateTime.now().toString(),
                                                                 productList: cartList,
-                                                                totalAmount: double.parse(
-                                                                    (getTotalAmount().toDouble() + serviceCharge - discountAmount + vatGst).toStringAsFixed(1)),
+                                                                dueAmount:double.parse(previousDue),
+                                                                totalAmount: double.parse((getTotalAmount().toDouble() + serviceCharge - discountAmount + vatGst).toStringAsFixed(1)),
                                                                 discountAmount: double.parse(discountAmount.toStringAsFixed(2)),
                                                                 serviceCharge: double.parse(serviceCharge.toStringAsFixed(2)),
                                                                 vat: double.parse(vatGst.toStringAsFixed(2)),
@@ -1943,6 +2004,7 @@ class _PosSaleState extends State<PosSale> {
                                                               ShowPaymentPopUp(
                                                                 transitionModel: transitionModel,
                                                                 isFromQuotation: widget.quotation == null ? false : true,
+                                                                previousDue: previousDue,
                                                               ).launch(context);
                                                             }
                                                           } else {

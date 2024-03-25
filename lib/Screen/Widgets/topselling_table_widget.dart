@@ -156,7 +156,8 @@ class TopSellingProduct extends StatelessWidget {
                     style: kTextStyle.copyWith(color: kGreyTextColor),
                   ),
                   trailing: Text(
-                    "$currency ${myFormat.format(double.tryParse(report[i].amount ?? '') ?? 0)}",
+                    // "$currency ${myFormat.format(double.tryParse(report[i].amount ?? '') ?? 0)}",
+                    "",
                     style: kTextStyle.copyWith(color: kGreyTextColor, fontSize: 16.0),
                   ),
                   contentPadding: const EdgeInsets.only(left: 10.0, right: 10.0),
@@ -228,7 +229,8 @@ class TopCustomerTable extends StatelessWidget {
                   style: kTextStyle.copyWith(color: kGreyTextColor, overflow: TextOverflow.ellipsis),
                 ),
                 trailing: Text(
-                  "$currency ${myFormat.format(double.tryParse(report[i].amount ?? '') ?? 0)}",
+                  // "$currency ${myFormat.format(double.tryParse(report[i].amount ?? '') ?? 0)}",
+                  "",
                   style: kTextStyle.copyWith(color: kTitleColor, fontSize: 16, overflow: TextOverflow.ellipsis),
                 ),
                 contentPadding: const EdgeInsets.only(left: 10.0, right: 10.0),

@@ -372,11 +372,10 @@ FutureOr<Uint8List> generateSaleDocument({required SaleTransactionModel transact
                 // headerDecoration: pw.BoxDecoration(color: PdfColor.fromHex('#D5D8DC')),
                 columnWidths: <int, pw.TableColumnWidth>{
                   0: const pw.FlexColumnWidth(1),
-                  1: const pw.FlexColumnWidth(6),
+                  1: const pw.FlexColumnWidth(4),
                   2: const pw.FlexColumnWidth(1.5),
-                  3: const pw.FlexColumnWidth(1.5),
-                  4: const pw.FlexColumnWidth(1.7),
-                  5: const pw.FlexColumnWidth(1.5),
+                  3: const pw.FlexColumnWidth(1.7),
+                  4: const pw.FlexColumnWidth(1.5),
                 },
                 headerStyle: pw.TextStyle(color: PdfColors.black, fontSize: 11, fontWeight: pw.FontWeight.bold),
                 rowDecoration: const pw.BoxDecoration(color: PdfColors.white),
@@ -385,25 +384,22 @@ FutureOr<Uint8List> generateSaleDocument({required SaleTransactionModel transact
                   0: pw.Alignment.center,
                   1: pw.Alignment.centerLeft,
                   2: pw.Alignment.center,
-                  3: pw.Alignment.center,
+                  3: pw.Alignment.centerRight,
                   4: pw.Alignment.centerRight,
-                  5: pw.Alignment.centerRight,
                 },
                 cellAlignments: <int, pw.Alignment>{
                   0: pw.Alignment.center,
                   1: pw.Alignment.centerLeft,
                   2: pw.Alignment.center,
-                  3: pw.Alignment.center,
+                  3: pw.Alignment.centerRight,
                   4: pw.Alignment.centerRight,
-                  5: pw.Alignment.centerRight,
                 },
                 data: <List<String>>[
-                  <String>['SL', 'Product Description', 'Warranty', 'Quantity', 'Unit Price', 'Price'],
+                  <String>['SL', 'Product Description','Quantity', 'Unit Price', 'Price'],
                   for (int i = 0; i < transactions.productList!.length; i++)
                     <String>[
                       ('${i + 1}'),
                       ("${transactions.productList!.elementAt(i).productName.toString()}\n${(transactions.productList!.elementAt(i).serialNumber?.isEmpty?? true) ? '' : transactions.productList!.elementAt(i).serialNumber.toString()}"),
-                      ('${transactions.productList!.elementAt(i).productWarranty.isEmptyOrNull ? '' : transactions.productList!.elementAt(i).productWarranty}'),
                       (myFormat.format(double.tryParse(transactions.productList!.elementAt(i).quantity.toString())??0)),
                       (myFormat.format(double.tryParse(transactions.productList!.elementAt(i).subTotal.toString())??0)),
                       (myFormat.format(double.tryParse((double.parse(transactions.productList!.elementAt(i).subTotal) * transactions.productList!.elementAt(i).quantity.toInt()).toStringAsFixed(2))??0))
@@ -445,7 +441,7 @@ FutureOr<Uint8List> generateSaleDocument({required SaleTransactionModel transact
                             pw.SizedBox(
                               width: 100.0,
                               child: pw.Text(
-                                'Total Amount',
+                                'Jami summa',
                                 style: pw.Theme.of(context).defaultTextStyle.copyWith(
                                       color: PdfColors.black,
                                       fontSize: 11,
@@ -467,37 +463,37 @@ FutureOr<Uint8List> generateSaleDocument({required SaleTransactionModel transact
                           pw.SizedBox(height: 2),
 
                           ///________vat_______________________________________________
-                          pw.Row(children: [
-                            pw.SizedBox(
-                              width: 100.0,
-                              child: pw.Text(
-                                'VAT/GST',
-                                style: pw.Theme.of(context).defaultTextStyle.copyWith(
-                                      color: PdfColors.black,
-                                      fontSize: 11,
-                                    ),
-                              ),
-                            ),
-                            pw.Container(
-                              alignment: pw.Alignment.centerRight,
-                              width: 150.0,
-                              child: pw.Text(
-                                myFormat.format(double.tryParse(transactions.vat.toString())??0),
-                                style: pw.Theme.of(context).defaultTextStyle.copyWith(
-                                      color: PdfColors.black,
-                                      fontSize: 11,
-                                    ),
-                              ),
-                            ),
-                          ]),
-                          pw.SizedBox(height: 2),
+                          // pw.Row(children: [
+                          //   pw.SizedBox(
+                          //     width: 100.0,
+                          //     child: pw.Text(
+                          //       'VAT/GST',
+                          //       style: pw.Theme.of(context).defaultTextStyle.copyWith(
+                          //             color: PdfColors.black,
+                          //             fontSize: 11,
+                          //           ),
+                          //     ),
+                          //   ),
+                          //   pw.Container(
+                          //     alignment: pw.Alignment.centerRight,
+                          //     width: 150.0,
+                          //     child: pw.Text(
+                          //       myFormat.format(double.tryParse(transactions.vat.toString())??0),
+                          //       style: pw.Theme.of(context).defaultTextStyle.copyWith(
+                          //             color: PdfColors.black,
+                          //             fontSize: 11,
+                          //           ),
+                          //     ),
+                          //   ),
+                          // ]),
+                          // pw.SizedBox(height: 2),
 
                           ///________Service/Shipping__________________________________
                           pw.Row(children: [
                             pw.SizedBox(
                               width: 100.0,
                               child: pw.Text(
-                                "Service/Shipping",
+                                "Xizmat/Yuk tashish",
                                 style: pw.Theme.of(context).defaultTextStyle.copyWith(
                                       color: PdfColors.black,
                                       fontSize: 11,
@@ -519,15 +515,15 @@ FutureOr<Uint8List> generateSaleDocument({required SaleTransactionModel transact
                           pw.SizedBox(height: 2),
 
                           ///_________divider__________________________________________
-                          pw.Divider(thickness: .5, height: 0.5, color: PdfColors.black),
-                          pw.SizedBox(height: 2),
+                          // pw.Divider(thickness: .5, height: 0.5, color: PdfColors.black),
+                          // pw.SizedBox(height: 2),
 
                           ///________Sub Total Amount_______________________________________________
                           pw.Row(children: [
                             pw.SizedBox(
                               width: 100.0,
                               child: pw.Text(
-                                'Sub-Total',
+                                'Oldingiz qarzi',
                                 style: pw.Theme.of(context).defaultTextStyle.copyWith(
                                       color: PdfColors.black,
                                       fontSize: 11,
@@ -553,7 +549,7 @@ FutureOr<Uint8List> generateSaleDocument({required SaleTransactionModel transact
                             pw.SizedBox(
                               width: 100.0,
                               child: pw.Text(
-                                'Discount',
+                                'Chegirma',
                                 style: pw.Theme.of(context).defaultTextStyle.copyWith(
                                       color: PdfColors.black,
                                       fontSize: 11,
@@ -575,35 +571,15 @@ FutureOr<Uint8List> generateSaleDocument({required SaleTransactionModel transact
                           pw.SizedBox(height: 2),
 
                           ///_________divider__________________________________________
-                          pw.Divider(thickness: .5, height: 0.5, color: PdfColors.black),
-                          pw.SizedBox(height: 2),
+                          // pw.Divider(thickness: .5, height: 0.5, color: PdfColors.black),
+                          // pw.SizedBox(height: 2),
 
-                          ///________payable_Amount_______________________________________________
-                          pw.Row(children: [
-                            pw.SizedBox(
-                              width: 150.0,
-                              child: pw.Text(
-                                'Net Payable Amount',
-                                style: pw.Theme.of(context).defaultTextStyle.copyWith(color: PdfColors.black, fontSize: 11, fontWeight: pw.FontWeight.bold),
-                              ),
-                            ),
-                            pw.Container(
-                              alignment: pw.Alignment.centerRight,
-                              width: 100.0,
-                              child: pw.Text(
-                                myFormat.format(double.tryParse(transactions.totalAmount.toString())??0),
-                                style: pw.Theme.of(context).defaultTextStyle.copyWith(color: PdfColors.black, fontSize: 11, fontWeight: pw.FontWeight.bold),
-                              ),
-                            ),
-                          ]),
-                          pw.SizedBox(height: 2),
-
-                          ///________Received_Amount_______________________________________________
+                            ///________Received_Amount_______________________________________________
                           pw.Row(children: [
                             pw.SizedBox(
                               width: 100.0,
                               child: pw.Text(
-                                'Received Amount',
+                                'Umumiy summa',
                                 style: pw.Theme.of(context).defaultTextStyle.copyWith(
                                       color: PdfColors.black,
                                       fontSize: 11,
@@ -625,15 +601,15 @@ FutureOr<Uint8List> generateSaleDocument({required SaleTransactionModel transact
                           pw.SizedBox(height: 2),
 
                           ///_________divider__________________________________________
-                          pw.Divider(thickness: .5, height: 0.5, color: PdfColors.black),
-                          pw.SizedBox(height: 2),
+                          // pw.Divider(thickness: .5, height: 0.5, color: PdfColors.black),
+                          // pw.SizedBox(height: 2),
 
                           ///________Received_Amount_______________________________________________
                           pw.Row(children: [
                             pw.SizedBox(
                               width: 100.0,
                               child: pw.Text(
-                                'Due Amount',
+                                'Qarz summasi',
                                 style: pw.Theme.of(context).defaultTextStyle.copyWith(
                                       color: PdfColors.black,
                                       fontSize: 11,

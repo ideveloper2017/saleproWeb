@@ -24,7 +24,6 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "ADDSALE": MessageLookupByLibrary.simpleMessage("SOTISHNI QO\'SHISH"),
         "CATEGORY": MessageLookupByLibrary.simpleMessage("KATEGORIYA"),
-        "INVOICE": MessageLookupByLibrary.simpleMessage("Invoice"),
         "MOBIPOS": MessageLookupByLibrary.simpleMessage("Pos Saas"),
         "POSSale": MessageLookupByLibrary.simpleMessage("POS-sotish"),
         "PRICE": MessageLookupByLibrary.simpleMessage("NARX"),
@@ -175,6 +174,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "discountPrice":
             MessageLookupByLibrary.simpleMessage("Chegirmali narx"),
         "downloadPDF": MessageLookupByLibrary.simpleMessage("PDF yuklab olish"),
+        "due": MessageLookupByLibrary.simpleMessage("Qarz"),
         "dueAmount":
             MessageLookupByLibrary.simpleMessage("To\'lanadigan balans"),
         "dueAmountWillShowHere": MessageLookupByLibrary.simpleMessage(
@@ -338,7 +338,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Aksiyani ko\'paytirish"),
         "instantPrivacy":
             MessageLookupByLibrary.simpleMessage("Tezkor maxfiylik"),
-        "invoice": MessageLookupByLibrary.simpleMessage("Invoice"),
+        "invoice": MessageLookupByLibrary.simpleMessage("Schyot raqam"),
         "invoiceCo": MessageLookupByLibrary.simpleMessage("Invoice:"),
         "invoiceHint":
             MessageLookupByLibrary.simpleMessage("Invoice raqami..."),
@@ -349,7 +349,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("KYC tekshiruvi"),
         "ledgeDetails": MessageLookupByLibrary.simpleMessage(
             "Buxgalteriya hisobi tafsilotlari"),
-        "ledger": MessageLookupByLibrary.simpleMessage("Ledger"),
+        "ledger": MessageLookupByLibrary.simpleMessage("Hisob kitobi"),
         "left": MessageLookupByLibrary.simpleMessage("chap"),
         "loanAccounts":
             MessageLookupByLibrary.simpleMessage("Kredit hisoblari"),
@@ -427,7 +427,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "packageFeature":
             MessageLookupByLibrary.simpleMessage("Paket xususiyatlari"),
         "paidAmount": MessageLookupByLibrary.simpleMessage("To\'lov miqdori"),
-        "partyName": MessageLookupByLibrary.simpleMessage("Partiya nomi"),
+        "partyName": MessageLookupByLibrary.simpleMessage("Mijoz nomi"),
         "partyType": MessageLookupByLibrary.simpleMessage("Partiya turi"),
         "password": MessageLookupByLibrary.simpleMessage("Parol"),
         "payCash": MessageLookupByLibrary.simpleMessage("Naqd pulda to\'lash"),
@@ -437,6 +437,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentOut": MessageLookupByLibrary.simpleMessage("To\'lov"),
         "paymentType": MessageLookupByLibrary.simpleMessage("To\'lov turi"),
         "paymentTypes": MessageLookupByLibrary.simpleMessage("To\'lov turi"),
+        "phone": MessageLookupByLibrary.simpleMessage("Telefon"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Telefon raqami"),
         "phoneVerification":
             MessageLookupByLibrary.simpleMessage("Telefon tekshiruvi"),
@@ -463,7 +464,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Premium mijozlarni qo\'llab-quvvatlash"),
         "premiumPlan": MessageLookupByLibrary.simpleMessage("Premium reja"),
         "preview": MessageLookupByLibrary.simpleMessage("Ko\'rib chiqish"),
-        "previousDue": MessageLookupByLibrary.simpleMessage("Oldingi to\'lov:"),
+        "previousDue": MessageLookupByLibrary.simpleMessage("Oldingi qarz:"),
         "price": MessageLookupByLibrary.simpleMessage("Narx"),
         "print": MessageLookupByLibrary.simpleMessage("Chop etish"),
         "printInvoice":
@@ -631,8 +632,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "totalAmount": MessageLookupByLibrary.simpleMessage("Jami summa"),
         "totalDiscount":
             MessageLookupByLibrary.simpleMessage("Jami chegirma miqdori"),
-        "totalDue":
-            MessageLookupByLibrary.simpleMessage("To\'lovning umumiy to\'lovi"),
+        "totalDue": MessageLookupByLibrary.simpleMessage("Jami qarz"),
         "totalDues":
             MessageLookupByLibrary.simpleMessage("To\'lanadigan umumiy summa"),
         "totalExpense": MessageLookupByLibrary.simpleMessage("Jami xarajatlar"),

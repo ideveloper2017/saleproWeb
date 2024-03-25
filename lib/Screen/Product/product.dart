@@ -401,7 +401,7 @@ class _ProductState extends State<Product> {
               AsyncValue<List<ProductModel>> productList = ref.watch(productProvider);
               return productList.when(data: (allProducts) {
                 List<ProductModel> showAbleProducts = [];
-                for (var element in allProducts) {
+                for (var element in allProducts.reversed.toList()) {
                   allProductsNameList.add(element.productName.removeAllWhiteSpace().toLowerCase());
                   allProductsCodeList.add(element.productCode.removeAllWhiteSpace().toLowerCase());
                   warehouseBasedProductModel.add(WarehouseBasedProductModel(element.productName, element.warehouseId));
@@ -993,6 +993,7 @@ class _ProductState extends State<Product> {
                                                                               () =>EditProduct(
                                                                              productModel: product,
                                                                              allProductsNameList: allProductsNameList,
+                                                                             allProductsCodeList: allProductsCodeList,
                                                                            ).launch(context),
                                                                         ),
                                                                       ),

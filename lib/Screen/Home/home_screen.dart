@@ -849,7 +849,7 @@ class _MtHomeScreenState extends State<MtHomeScreen> {
                                                               Text('Invoice', style: kTextStyle.copyWith(color: kTitleColor, overflow: TextOverflow.ellipsis))),
                                                       DataColumn(
                                                           label: Flexible(
-                                                              child: Text('Party Name',
+                                                              child: Text('Mijoz',
                                                                   style: kTextStyle.copyWith(color: kTitleColor, overflow: TextOverflow.ellipsis)))),
                                                       DataColumn(
                                                           label: Flexible(

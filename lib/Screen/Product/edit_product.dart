@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:firebase_database/firebase_database.dart';
@@ -20,17 +21,22 @@ import 'package:salespro_admin/Screen/Widgets/Constant%20Data/button_global.dart
 import 'package:salespro_admin/generated/l10n.dart' as lang;
 import '../../Provider/product_provider.dart';
 import '../../const.dart';
+import '../../model/brands_model.dart';
+import '../../model/category_model.dart';
 import '../../model/product_model.dart';
+import '../../model/unit_model.dart';
+import '../WareHouse/warehouse_model.dart';
 import '../Widgets/Constant Data/constant.dart';
 import '../Widgets/Footer/footer.dart';
 import '../Widgets/Sidebar/sidebar_widget.dart';
 import '../Widgets/TopBar/top_bar_widget.dart';
 
 class EditProduct extends StatefulWidget {
-  const EditProduct({Key? key, required this.productModel, required this.allProductsNameList}) : super(key: key);
+  const EditProduct({Key? key, required this.productModel, required this.allProductsNameList,required this.allProductsCodeList}) : super(key: key);
 
   final ProductModel productModel;
   final List<String> allProductsNameList;
+  final List<String> allProductsCodeList;
 
 
 
@@ -51,10 +57,662 @@ class _AddProductState extends State<EditProduct> {
     return false;
   }
 
+  List<String> allNameInThisFile = [];
+  List<String> allCodeInThisFile = [];
+  List<String> allCategory = [];
+  bool isSize = false;
+  bool isColor = false;
+  bool isWeight = false;
+  bool isCapacity = false;
+  bool isType = false;
+  bool isWarranty = false;
+  bool isSizedBoxShow = false;
+  bool isColoredBoxShow = false;
+  bool isWeightsBoxShow = false;
+  bool isWarrantyBoxShow = false;
+  bool isCapacityBoxShow = false;
+  bool isTypeBoxShow = false;
+  int brandTime = 0;
+  int unitTime = 0;
+  int categoryTime = 0;
+  TextEditingController expireDateTextEditingController = TextEditingController();
+  TextEditingController manufactureDateTextEditingController = TextEditingController();
+  int lowerStockAlert = 5;
+  String? expireDate;
+  String? manufactureDate;
+
+  List<String> productSerialNumberList = [];
   bool isSerialNumberTaken = false;
   String selectedTime = 'Year';
   List<String> warrantyTime = ['Day', 'Month', 'Year'];
   String productPicture = '';
+
+  Future<void> addCategoryShowPopUp({required WidgetRef ref, required List<String> categoryNameList, required BuildContext addProductContext}) async {
+    GlobalKey<FormState> categoryNameKey = GlobalKey<FormState>();
+    bool categoryValidateAndSave() {
+      final form = categoryNameKey.currentState;
+      if (form!.validate()) {
+        form.save();
+        return true;
+      }
+      return false;
+    }
+
+    showDialog(
+        barrierDismissible: false,
+        context: addProductContext,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState1) {
+            return Dialog(
+              surfaceTintColor: kWhiteTextColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+              child: SizedBox(
+                width: 600,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(4.0),
+                            decoration: const BoxDecoration(shape: BoxShape.rectangle),
+                            child: const Icon(
+                              FeatherIcons.plus,
+                              color: kTitleColor,
+                            ),
+                          ),
+                          const SizedBox(width: 4.0),
+                          Text(
+                            lang.S.of(context).addItemCategory,
+                            style: kTextStyle.copyWith(color: kTitleColor, fontSize: 18.0, fontWeight: FontWeight.bold),
+                          ),
+                          const Spacer(),
+                          const Icon(
+                            FeatherIcons.x,
+                            color: kTitleColor,
+                            size: 21.0,
+                          ).onTap(() {
+                            itemCategoryController.clear();
+                            isSize = false;
+                            isColor = false;
+                            isWeight = false;
+                            isCapacity = false;
+                            isType = false;
+                            isWarranty = false;
+                            finish(context);
+                          })
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      Divider(
+                        thickness: 1.0,
+                        color: kGreyTextColor.withOpacity(0.2),
+                      ),
+                      const SizedBox(height: 10.0),
+                      Row(
+                        children: [
+                          Text(
+                            lang.S.of(context).categoryName,
+                            style: kTextStyle.copyWith(color: kTitleColor, fontSize: 18.0),
+                          ),
+                          const SizedBox(width: 20),
+                          Form(
+                            key: categoryNameKey,
+                            child: SizedBox(
+                              width: 400,
+                              child: TextFormField(
+                                controller: itemCategoryController,
+                                validator: (value) {
+                                  if (value.isEmptyOrNull) {
+                                    return 'Category name is required.';
+                                  } else if (categoryNameList.contains(value.removeAllWhiteSpace().toLowerCase())) {
+                                    return 'Category name is already exist.';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                showCursor: true,
+                                cursorColor: kTitleColor,
+                                decoration: kInputDecoration.copyWith(
+                                  errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                                  labelText: lang.S.of(context).categoryName,
+                                  hintText: lang.S.of(context).enterCategoryName,
+                                  hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
+                      Text(
+                        lang.S.of(context).selectVariations,
+                        style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold, fontSize: 18.0),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ListTile(
+                              leading: Checkbox(
+                                activeColor: kMainColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                value: isSize,
+                                onChanged: (val) {
+                                  setState1(
+                                        () {
+                                      isSize = val!;
+                                    },
+                                  );
+                                },
+                              ),
+                              title: Text(lang.S.of(context).size),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              leading: Checkbox(
+                                activeColor: kMainColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                value: isColor,
+                                onChanged: (val) {
+                                  setState1(() {
+                                    isColor = val!;
+                                  });
+                                },
+                              ),
+                              title: Text(lang.S.of(context).color),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ListTile(
+                              leading: Checkbox(
+                                activeColor: kMainColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                value: isWeight,
+                                onChanged: (val) {
+                                  setState1(() {
+                                    isWeight = val!;
+                                  });
+                                },
+                              ),
+                              title: Text(lang.S.of(context).wight),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              leading: Checkbox(
+                                activeColor: kMainColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                value: isCapacity,
+                                onChanged: (val) {
+                                  setState1(
+                                        () {
+                                      isCapacity = val!;
+                                    },
+                                  );
+                                },
+                              ),
+                              title: Text(lang.S.of(context).capacity),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ListTile(
+                              leading: Checkbox(
+                                activeColor: kMainColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                value: isType,
+                                onChanged: (val) {
+                                  setState1(
+                                        () {
+                                      isType = val!;
+                                    },
+                                  );
+                                },
+                              ),
+                              title: Text(lang.S.of(context).type),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              leading: Checkbox(
+                                activeColor: kMainColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                value: isWarranty,
+                                onChanged: (val) {
+                                  setState1(
+                                        () {
+                                      isWarranty = val!;
+                                    },
+                                  );
+                                },
+                              ),
+                              title: Text(lang.S.of(context).warranty),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 5.0),
+                      Divider(
+                        thickness: 1.0,
+                        color: kGreyTextColor.withOpacity(0.2),
+                      ),
+                      const SizedBox(height: 5.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: kRedTextColor),
+                            child: Text(
+                              lang.S.of(context).cancel,
+                              style: kTextStyle.copyWith(color: kWhiteTextColor),
+                            ),
+                          ).onTap(() {
+                            itemCategoryController.clear();
+                            isSize = false;
+                            isColor = false;
+                            isWeight = false;
+                            isCapacity = false;
+                            isType = false;
+                            isWarranty = false;
+
+                            finish(context);
+                          }),
+                          const SizedBox(width: 5.0),
+                          Container(
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: kGreenTextColor),
+                            child: Text(
+                              lang.S.of(context).submit,
+                              style: kTextStyle.copyWith(color: kWhiteTextColor),
+                            ),
+                          ).onTap(() async {
+                            if (categoryValidateAndSave()) {
+                              EasyLoading.show(status: 'Adding Category');
+                              try {
+                                final DatabaseReference categoryInformationRef = FirebaseDatabase.instance.ref().child(await getUserID()).child('Categories');
+                                CategoryModel categoryModel = CategoryModel(
+                                  categoryName: itemCategoryController.text,
+                                  size: isSize,
+                                  color: isColor,
+                                  capacity: isCapacity,
+                                  type: isType,
+                                  weight: isWeight,
+                                  warranty: isWarranty,
+                                );
+
+                                await categoryInformationRef.push().set(categoryModel.toJson());
+                                ref.refresh(categoryProvider);
+
+                                setState1(() {
+                                  // selectedCategories = categoryModel.categoryName;
+                                  isSizedBoxShow = isSize;
+                                  isColoredBoxShow = isColor;
+                                  isWeightsBoxShow = isWeight;
+                                  isCapacityBoxShow = isCapacity;
+                                  isTypeBoxShow = isType;
+                                  isWarrantyBoxShow = isWarranty;
+                                });
+
+                                itemCategoryController.clear();
+                                isSize = false;
+                                isColor = false;
+                                isWeight = false;
+                                isCapacity = false;
+                                isType = false;
+                                isWarranty = false;
+                                EasyLoading.showSuccess("Successfully Added");
+
+                                finish(context);
+                              } catch (e) {
+                                EasyLoading.showError('Error');
+                              }
+                            }
+                          })
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+        });
+  }
+
+  Future<void> showBrandPopUp({required WidgetRef ref, required List<String> brandNameList, required BuildContext addProductsContext}) async {
+    GlobalKey<FormState> brandNameKey = GlobalKey<FormState>();
+    bool brandValidateAndSave() {
+      final form = brandNameKey.currentState;
+      if (form!.validate()) {
+        form.save();
+        return true;
+      }
+      return false;
+    }
+
+    showDialog(
+        barrierDismissible: false,
+        context: addProductsContext,
+        builder: (BuildContext context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Dialog(
+              surfaceTintColor: kWhiteTextColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: SizedBox(
+                width: 600,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(4.0),
+                            decoration: const BoxDecoration(shape: BoxShape.rectangle),
+                            child: const Icon(
+                              FeatherIcons.plus,
+                              color: kTitleColor,
+                            ),
+                          ),
+                          const SizedBox(width: 4.0),
+                          Text(
+                            lang.S.of(context).addBrand,
+                            style: kTextStyle.copyWith(color: kTitleColor, fontSize: 18.0, fontWeight: FontWeight.bold),
+                          ),
+                          const Spacer(),
+                          const Icon(
+                            FeatherIcons.x,
+                            color: kTitleColor,
+                            size: 21.0,
+                          ).onTap(() {
+                            brandNameController.clear();
+                            finish(context);
+                          })
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      Divider(
+                        thickness: 1.0,
+                        color: kGreyTextColor.withOpacity(0.2),
+                      ),
+                      const SizedBox(height: 10.0),
+                      Row(
+                        children: [
+                          Text(
+                            lang.S.of(context).brandName,
+                            style: kTextStyle.copyWith(color: kTitleColor, fontSize: 18.0),
+                          ),
+                          const SizedBox(width: 50),
+                          Form(
+                            key: brandNameKey,
+                            child: SizedBox(
+                              width: 400,
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value.isEmptyOrNull) {
+                                    return 'Brand name is required.';
+                                  } else if (brandNameList.contains(value.removeAllWhiteSpace().toLowerCase())) {
+                                    return 'Brand name is already exist.';
+                                  } else {
+                                    return null;
+                                  }
+                                },
+                                controller: brandNameController,
+                                showCursor: true,
+                                cursorColor: kTitleColor,
+                                decoration: kInputDecoration.copyWith(
+                                  errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                                  labelText: lang.S.of(context).brandName,
+                                  hintText: lang.S.of(context).enterBrandName,
+                                  hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10.0),
+                      Divider(
+                        thickness: 1.0,
+                        color: kGreyTextColor.withOpacity(0.2),
+                      ),
+                      const SizedBox(height: 5.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: kRedTextColor),
+                            child: Text(
+                              lang.S.of(context).cancel,
+                              style: kTextStyle.copyWith(color: kWhiteTextColor),
+                            ),
+                          ).onTap(() {
+                            brandNameController.clear();
+                            finish(context);
+                          }),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: kGreenTextColor),
+                            child: Text(
+                              lang.S.of(context).submit,
+                              style: kTextStyle.copyWith(color: kWhiteTextColor),
+                            ),
+                          ).onTap(() async {
+                            if (brandValidateAndSave()) {
+                              try {
+                                EasyLoading.show(status: 'Adding Brand');
+                                final DatabaseReference categoryInformationRef = FirebaseDatabase.instance.ref().child(await getUserID()).child('Brands');
+                                BrandsModel brandModel = BrandsModel(brandNameController.text);
+                                await categoryInformationRef.push().set(brandModel.toJson());
+                                ref.refresh(brandProvider);
+                                setState(() {
+                                  // selectedBrand = brandModel.brandName;
+                                  // brandName.clear();
+                                });
+                                brandNameController.clear();
+                                EasyLoading.showSuccess("Successfully Added");
+                                finish(context);
+                              } catch (e) {
+                                EasyLoading.showError('Error');
+                              }
+                            }
+                          })
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            );
+          });
+        });
+  }
+
+  void showUnitPopUp({required WidgetRef ref, required List<String> unitNameList, required BuildContext addProductsContext}) {
+    GlobalKey<FormState> unitNameKey = GlobalKey<FormState>();
+    bool unitValidateAndSave() {
+      final form = unitNameKey.currentState;
+      if (form!.validate()) {
+        form.save();
+        return true;
+      }
+      return false;
+    }
+
+    showDialog(
+        barrierDismissible: true,
+        context: addProductsContext,
+        builder: (BuildContext context) {
+          return Dialog(
+            surfaceTintColor: kWhiteTextColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: SizedBox(
+              width: 600,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(4.0),
+                          decoration: const BoxDecoration(shape: BoxShape.rectangle),
+                          child: const Icon(
+                            FeatherIcons.plus,
+                            color: kTitleColor,
+                          ),
+                        ),
+                        const SizedBox(width: 4.0),
+                        Text(
+                          lang.S.of(context).addUnit,
+                          style: kTextStyle.copyWith(color: kTitleColor, fontSize: 18.0, fontWeight: FontWeight.bold),
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          FeatherIcons.x,
+                          color: kTitleColor,
+                          size: 21.0,
+                        ).onTap(() {
+                          unitNameController.clear();
+                          descriptionController.clear();
+                          finish(context);
+                        })
+                      ],
+                    ),
+                    const SizedBox(height: 20.0),
+                    Divider(
+                      thickness: 1.0,
+                      color: kGreyTextColor.withOpacity(0.2),
+                    ),
+                    const SizedBox(height: 10.0),
+                    Row(
+                      children: [
+                        Text(
+                          lang.S.of(context).unitName,
+                          style: kTextStyle.copyWith(color: kTitleColor, fontSize: 18.0),
+                        ),
+                        const SizedBox(width: 50),
+                        Form(
+                          key: unitNameKey,
+                          child: SizedBox(
+                            width: 400,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value.isEmptyOrNull) {
+                                  return 'Unit name is required.';
+                                } else if (unitNameList.contains(value.removeAllWhiteSpace().toLowerCase())) {
+                                  return 'Unit name is already exist.';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              controller: unitNameController,
+                              showCursor: true,
+                              cursorColor: kTitleColor,
+                              decoration: kInputDecoration.copyWith(
+                                errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                                labelText: lang.S.of(context).unitName,
+                                hintText: lang.S.of(context).enterUnitName,
+                                hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5.0),
+                    Divider(
+                      thickness: 1.0,
+                      color: kGreyTextColor.withOpacity(0.2),
+                    ),
+                    const SizedBox(height: 5.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: kRedTextColor),
+                          child: Text(
+                            lang.S.of(context).cancel,
+                            style: kTextStyle.copyWith(color: kWhiteTextColor),
+                          ),
+                        ).onTap(() {
+                          unitNameController.clear();
+                          finish(context);
+                        }),
+                        const SizedBox(width: 5.0),
+                        Container(
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: kGreenTextColor),
+                          child: Text(
+                            lang.S.of(context).submit,
+                            style: kTextStyle.copyWith(color: kWhiteTextColor),
+                          ),
+                        ).onTap(() async {
+                          if (unitValidateAndSave()) {
+                            try {
+                              EasyLoading.show(status: 'Adding Units');
+                              final DatabaseReference categoryInformationRef = FirebaseDatabase.instance.ref().child(await getUserID()).child('Units');
+                              UnitModel unitModel = UnitModel(unitNameController.text);
+                              await categoryInformationRef.push().set(unitModel.toJson());
+                              ref.refresh(unitProvider);
+                              setState(() {
+                                unitTime = 0;
+                                extraAddedUnits.clear();
+                                selectedUnit = unitModel.unitName;
+                              });
+                              unitNameController.clear();
+                              EasyLoading.showSuccess("Successfully Added");
+                              finish(context);
+                            } catch (e) {
+                              EasyLoading.showError('Error');
+                            }
+                          }
+                        })
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
 
   Uint8List? image;
 
@@ -86,26 +744,64 @@ class _AddProductState extends State<EditProduct> {
     }
   }
 
+  List<String> extraAddedUnits = [];
+  List<String> allUnitList = [
+    "PIECES (Pcs)",
+    "BAGS (Bag)",
+    "BOX ( Box )",
+    "PACKS (Pac)",
+    "PAIRS (Prs)",
+    "LITRE (Ltr)",
+    "CANS (Can)",
+    "ROLLS (Rol)",
+    "QUINTAL (Qtl)",
+    "CARTONS (Ctn)",
+    "DOZENS (Dzn)",
+    "MILILITRE (Mr)",
+    "BOTTLES (Blt)",
+    "BUNDLES (Bdl)",
+    "GRAMMES (Gm)",
+    "KILOGRAMS (Kg)",
+    "NUMBERS (Nos)",
+    "TABLETS (Tbs)",
+    "SQUARE FEET (Sqf)",
+    "SQUARE METERS (Sqm)"
+  ];
+
+  String? selectedBrand;
+  String? selectedCategories;
+  String? selectedUnit = 'PIECES (Pcs)';
+
+
+  String productSalePrice = '';
+  String productPurchasePrice = '';
+  String productDealerPrice = '';
+  String productWholeSalePrice = '';
+
   TextEditingController productNameController = TextEditingController();
+  TextEditingController productCodeController = TextEditingController();
+  TextEditingController productQuantityController = TextEditingController();
   TextEditingController productSalePriceController = TextEditingController();
   TextEditingController productPurchasePriceController = TextEditingController();
-  TextEditingController productDiscountPriceController = TextEditingController();
-  TextEditingController productWholesalePriceController = TextEditingController();
-  TextEditingController productDealerPriceController = TextEditingController();
-  TextEditingController productManufacturerController = TextEditingController();
-
-  TextEditingController sizeController = TextEditingController();
-  TextEditingController colorController = TextEditingController();
-  TextEditingController weightController = TextEditingController();
-  TextEditingController capacityController = TextEditingController();
-  TextEditingController typeController = TextEditingController();
-  TextEditingController warrantyController = TextEditingController();
+  TextEditingController productDiscountPriceController = TextEditingController(text: '');
+  TextEditingController productWholesalePriceController = TextEditingController(text: '');
+  TextEditingController productDealerPriceController = TextEditingController(text: '');
+  TextEditingController productManufacturerController = TextEditingController(text: '');
   TextEditingController productSerialNumberController = TextEditingController(text: '');
-  TextEditingController expireDateTextEditingController = TextEditingController();
-  TextEditingController manufactureDateTextEditingController = TextEditingController();
-  int lowerStockAlert = 5;
-  String? expireDate;
-  String? manufactureDate;
+
+  TextEditingController itemCategoryController = TextEditingController();
+  TextEditingController brandNameController = TextEditingController();
+  TextEditingController unitNameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+  TextEditingController sizeController = TextEditingController(text: '');
+  TextEditingController colorController = TextEditingController(text: '');
+  TextEditingController weightController = TextEditingController(text: '');
+  TextEditingController capacityController = TextEditingController(text: '');
+  TextEditingController typeController = TextEditingController(text: '');
+  TextEditingController warrantyController = TextEditingController(text: '');
+  final TextEditingController _textEditingController = TextEditingController(text:'');
+
 
   late String productKey;
 
@@ -132,6 +828,7 @@ class _AddProductState extends State<EditProduct> {
   @override
   void initState() {
     productModel = widget.productModel;
+    productCodeController.text = widget.productModel.productCode;
     productNameController.text = widget.productModel.productName;
     productSalePriceController.text = widget.productModel.productSalePrice;
     productPurchasePriceController.text = widget.productModel.productPurchasePrice;
@@ -174,6 +871,7 @@ class _AddProductState extends State<EditProduct> {
 
   ScrollController mainScroll = ScrollController();
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -185,6 +883,11 @@ class _AddProductState extends State<EditProduct> {
           scrollDirection: Axis.horizontal,
           child: Consumer(
             builder: (context, ref, __) {
+              final unitList = ref.watch(unitProvider);
+              final brandList = ref.watch(brandProvider);
+              final categoryList = ref.watch(categoryProvider);
+              final wareHouseList = ref.watch(warehouseProvider);
+              selectedCategories=widget.productModel.productCategory;
               return Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,19 +977,192 @@ class _AddProductState extends State<EditProduct> {
                                                       ),
                                                     ),
                                                     const SizedBox(width: 20.0),
-                                                    Expanded(
-                                                      child: TextFormField(
-                                                        readOnly: true,
-                                                        initialValue: widget.productModel.productCategory,
-                                                        cursorColor: kTitleColor,
-                                                        decoration: kInputDecoration.copyWith(
-                                                          errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-                                                          labelText: lang.S.of(context).productCategory,
-                                                          labelStyle: kTextStyle.copyWith(color: kTitleColor),
-                                                          hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
-                                                        ),
-                                                      ),
+                                                    categoryList.when(
+                                                      data: (category) {
+                                                        List<String> editNameList = [];
+                                                        List<String> categoryName = [];
+                                                        // if (category.isEmpty) {
+                                                        //   // postGeneralCategory();
+                                                        //   ref.refresh(categoryProvider);
+                                                        // }
+                                                        // categoryTime == 0
+                                                        //     // ignore: avoid_function_literals_in_foreach_calls
+                                                        //     ? category.forEach((element) {
+                                                        //
+                                                        //         editNameList.add(element.categoryName.removeAllWhiteSpace().toLowerCase());
+                                                        //         categoryTime++;
+                                                        //       })
+                                                        //     : null;
+                                                        for (var element in category) {
+                                                          categoryName.add(element.categoryName);
+                                                          editNameList.add(element.categoryName.toLowerCase().removeAllWhiteSpace());
+                                                        }
+                                                        return Expanded(
+                                                          child: FormField(
+                                                            builder: (FormFieldState<dynamic> field) {
+                                                              return InputDecorator(
+                                                                decoration: InputDecoration(
+                                                                    enabledBorder: const OutlineInputBorder(
+                                                                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                                                      borderSide: BorderSide(color: kBorderColorTextField, width: 2),
+                                                                    ),
+                                                                    suffixIcon: GestureDetector(
+                                                                        onTap: () async {
+                                                                          await addCategoryShowPopUp(
+                                                                              ref: ref, categoryNameList: editNameList, addProductContext: context);
+                                                                        },
+                                                                        child: const Icon(FeatherIcons.plus, color: kTitleColor)),
+                                                                    contentPadding: const EdgeInsets.all(8.0),
+                                                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                                                    labelText: lang.S.of(context).category),
+                                                                child: Theme(
+                                                                    data: ThemeData(
+                                                                        highlightColor: dropdownItemColor,
+                                                                        focusColor: dropdownItemColor,
+                                                                        hoverColor: dropdownItemColor),
+                                                                    child: DropdownButtonHideUnderline(
+                                                                      child: DropdownButton2<String>(
+                                                                        isExpanded: true,
+                                                                        hint: Text(
+                                                                          'Select Category',
+                                                                          style: TextStyle(
+                                                                            fontSize: 14,
+                                                                            color: Theme.of(context).hintColor,
+                                                                          ),
+                                                                        ),
+                                                                        items: categoryName.map((String items) {
+                                                                          return DropdownMenuItem(
+                                                                            value: items,
+                                                                            child: Text(items),
+                                                                          );
+                                                                        }).toList(),
+                                                                        value: selectedCategories,
+                                                                        onChanged: (String? value) {
+                                                                          setState(() {
+                                                                            selectedCategories = value!;
+                                                                            for (var element in category) {
+                                                                              if (element.categoryName == selectedCategories) {
+                                                                                isSizedBoxShow = element.size;
+                                                                                isColoredBoxShow = element.color;
+                                                                                isWeightsBoxShow = element.weight;
+                                                                                isCapacityBoxShow = element.capacity;
+                                                                                isTypeBoxShow = element.type;
+                                                                                isWarrantyBoxShow = element.warranty;
+                                                                              }
+                                                                            }
+                                                                            toast(selectedCategories);
+                                                                          });
+                                                                        },
+                                                                        buttonStyleData: const ButtonStyleData(
+                                                                          padding: EdgeInsets.symmetric(horizontal: 16),
+                                                                          height: 50,
+                                                                          width: 200,
+                                                                        ),
+                                                                        dropdownStyleData: const DropdownStyleData(
+                                                                          maxHeight: 550,
+                                                                        ),
+                                                                        menuItemStyleData: const MenuItemStyleData(
+                                                                          height: 30,
+                                                                        ),
+                                                                        dropdownSearchData: DropdownSearchData(
+                                                                          searchController: itemCategoryController,
+                                                                          searchInnerWidgetHeight: 150,
+                                                                          searchInnerWidget: Container(
+                                                                            height: 50,
+                                                                            padding: const EdgeInsets.only(
+                                                                              top: 8,
+                                                                              bottom: 4,
+                                                                              right: 8,
+                                                                              left: 8,
+                                                                            ),
+                                                                            child: TextFormField(
+                                                                              expands: true,
+                                                                              maxLines: null,
+                                                                              controller: itemCategoryController,
+                                                                              decoration: InputDecoration(
+                                                                                isDense: true,
+                                                                                contentPadding: const EdgeInsets.symmetric(
+                                                                                  horizontal: 10,
+                                                                                  vertical: 8,
+                                                                                ),
+                                                                                hintText: 'Element qidirish...',
+                                                                                hintStyle: const TextStyle(fontSize: 12),
+                                                                                border: OutlineInputBorder(
+                                                                                  borderRadius: BorderRadius.circular(8),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          searchMatchFn: (item, searchValue) {
+                                                                            return item.value.toString().toLowerCase().contains(searchValue.toLowerCase());
+                                                                          },
+                                                                        ),
+                                                                        //This to clear the search value when you close the menu
+                                                                        onMenuStateChange: (isOpen) {
+                                                                          if (!isOpen) {
+                                                                            itemCategoryController.clear();
+                                                                          }
+                                                                        },
+                                                                      ),
+
+                                                                      // hint: const Text('Select Category'),
+
+                                                                      // onChanged: (String? value) {
+                                                                      //   setState(() {
+                                                                      //     selectedCategories = value!;
+                                                                      //     for (var element in category) {
+                                                                      //       if (element.categoryName == selectedCategories) {
+                                                                      //         isSizedBoxShow = element.size;
+                                                                      //         isColoredBoxShow = element.color;
+                                                                      //         isWeightsBoxShow = element.weight;
+                                                                      //         isCapacityBoxShow = element.capacity;
+                                                                      //         isTypeBoxShow = element.type;
+                                                                      //         isWarrantyBoxShow = element.warranty;
+                                                                      //       }
+                                                                      //     }
+                                                                      //     toast(selectedCategories);
+                                                                      //   });
+                                                                      // },
+                                                                      // value: selectedCategories,
+                                                                      // items: categoryName.map((String items) {
+                                                                      //   return DropdownMenuItem(
+                                                                      //     value: items,
+                                                                      //     child: Text(items),
+                                                                      //   );
+                                                                      // }).toList(),
+                                                                    )),
+                                                                // ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        );
+                                                      },
+                                                      error: (e, stack) {
+                                                        return Center(
+                                                          child: Text(
+                                                            e.toString(),
+                                                          ),
+                                                        );
+                                                      },
+                                                      loading: () {
+                                                        return const Center(
+                                                          child: CircularProgressIndicator(),
+                                                        );
+                                                      },
                                                     ),
+                                                    // Expanded(
+                                                    //   child: TextFormField(
+                                                    //     readOnly: true,
+                                                    //     initialValue: widget.productModel.productCategory,
+                                                    //     cursorColor: kTitleColor,
+                                                    //     decoration: kInputDecoration.copyWith(
+                                                    //       errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+                                                    //       labelText: lang.S.of(context).productCategory,
+                                                    //       labelStyle: kTextStyle.copyWith(color: kTitleColor),
+                                                    //       hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
+                                                    //     ),
+                                                    //   ),
+                                                    // ),
                                                   ],
                                                 ),
                                                 const SizedBox(height: 20.0),
@@ -496,7 +1372,17 @@ class _AddProductState extends State<EditProduct> {
                                                     const SizedBox(width: 20.0),
                                                     Expanded(
                                                       child: TextFormField(
-                                                        initialValue: widget.productModel.productCode,
+
+                                                        onSaved: (value) {
+                                                          if (value.removeAllWhiteSpace().isEmptyOrNull) {
+                                                            //  productCodeController.text = '';
+                                                            // } else {
+                                                            productCodeController.text = value!;
+                                                          }
+                                                        },
+                                                        showCursor: true,
+                                                        controller: productCodeController,
+                                                        // initialValue: widget.productModel.productCode,
                                                         cursorColor: kTitleColor,
                                                         decoration: kInputDecoration.copyWith(
                                                           errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
@@ -933,7 +1819,7 @@ class _AddProductState extends State<EditProduct> {
                                                               productModel.productPurchasePrice = productPurchasePriceController.text;
                                                               productModel.productDealerPrice = productDealerPriceController.text;
                                                               productModel.productWholeSalePrice = productWholesalePriceController.text;
-
+                                                              productModel.productCode=productCodeController.text;
                                                               productModel.productManufacturer = productManufacturerController.text;
                                                               productModel.warranty = warrantyController.text == '' ? '' : '${warrantyController.text} $selectedTime';
                                                               productModel.productPicture = productPicture;

@@ -89,6 +89,15 @@ class _AddProductState extends State<AddProduct> {
   List<String> productSerialNumberList = [];
   bool saleButtonClicked = false;
 
+  Future<String> getProductCode() async {
+    // ref(await getUserID()).child('Products')
+    final ref =await FirebaseDatabase.instance.ref('${await getUserID()}/Products').orderByChild('productCode');
+    DatabaseEvent event = await ref.once();
+
+    print(event.snapshot.value); // { "name": "John" }
+
+    return "";
+  }
 
   Future<void> addCategoryShowPopUp({required WidgetRef ref, required List<String> categoryNameList, required BuildContext addProductContext}) async {
     GlobalKey<FormState> categoryNameKey = GlobalKey<FormState>();
@@ -885,6 +894,16 @@ class _AddProductState extends State<AddProduct> {
     );
   }
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      productCodeController.text =  getProductCode() as String;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -900,6 +919,7 @@ class _AddProductState extends State<AddProduct> {
               final brandList = ref.watch(brandProvider);
               final categoryList = ref.watch(categoryProvider);
               final wareHouseList = ref.watch(warehouseProvider);
+
               return Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1541,10 +1561,10 @@ class _AddProductState extends State<AddProduct> {
                                                             return null;
                                                           }
                                                         },
-                                                        onSaved: (value) {
+                                                        onSaved: (value) async {
                                                           if (value.removeAllWhiteSpace().isEmptyOrNull) {
-                                                          //  productCodeController.text = '';
-                                                          // } else {
+                                                           productCodeController.text =  await getProductCode();
+                                                          } else {
                                                             productCodeController.text = value!;
                                                           }
                                                         },
