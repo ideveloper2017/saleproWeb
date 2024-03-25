@@ -271,13 +271,13 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                                     paidBalance=(paidAmount - widget.transitionModel.totalAmount!.toDouble());
                                                     changeAmountController.text = paidBalance.toString();
                                                     dueAmountController.text = paidBalance.toString();
-                                                    totalDueAmountController.text = (paidBalance-widget.transitionModel.dueAmount!.toInt()).abs().toString();
+                                                    totalDueAmountController.text = (paidBalance-widget.transitionModel.dueAmount!.toDouble()).abs().toString();
                                                   } else  {
                                                     paidBalance=(widget.transitionModel.totalAmount!.toDouble() - paidAmount).abs();
                                                     dueAmountController.text = paidBalance.toStringAsFixed(2);
 
                                                     changeAmountController.text = '0';
-                                                    totalDueAmountController.text = (widget.transitionModel.dueAmount!.toInt()+paidBalance).abs().toString();
+                                                    totalDueAmountController.text = (widget.transitionModel.dueAmount!.toDouble()+paidBalance).abs().toString();
 
                                                   }
                                                 });
