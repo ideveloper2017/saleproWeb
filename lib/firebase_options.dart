@@ -61,15 +61,15 @@ class DefaultFirebaseOptions {
   //     appId: "Your firebase appId");
 
  //Ravshanboy
-//   static const FirebaseOptions web = FirebaseOptions(
-//    apiKey: "AIzaSyDBnlj7lgb7HTVoX9Wi9QOE6ENqyOV55MU",
-//   authDomain: "salesprp-31e4a.firebaseapp.com",
-//   databaseURL: "https://salesprp-31e4a-default-rtdb.firebaseio.com",
-//   projectId: "salesprp-31e4a",
-//   storageBucket: "salesprp-31e4a.appspot.com",
-//   messagingSenderId: "980258861434",
-//   appId: "1:980258861434:web:ac6720286e4169b6c026c3");
-// }
+  static const FirebaseOptions web = FirebaseOptions(
+   apiKey: "AIzaSyDBnlj7lgb7HTVoX9Wi9QOE6ENqyOV55MU",
+  authDomain: "salesprp-31e4a.firebaseapp.com",
+  databaseURL: "https://salesprp-31e4a-default-rtdb.firebaseio.com",
+  projectId: "salesprp-31e4a",
+  storageBucket: "salesprp-31e4a.appspot.com",
+  messagingSenderId: "980258861434",
+  appId: "1:980258861434:web:ac6720286e4169b6c026c3");
+}
 
 //Umarxon
 //   static const FirebaseOptions web = FirebaseOptions(
@@ -84,16 +84,16 @@ class DefaultFirebaseOptions {
 // }
 
 //Test Demo
-static const FirebaseOptions web = FirebaseOptions(
-    apiKey: "AIzaSyBZ0pjkJxE7wsn36zuYtnen-NO7gX5u3qA",
-    authDomain: "fir-dbdemo-4c345.firebaseapp.com",
-    databaseURL: "https://fir-dbdemo-4c345-default-rtdb.firebaseio.com",
-    projectId: "fir-dbdemo-4c345",
-    storageBucket: "fir-dbdemo-4c345.appspot.com",
-    messagingSenderId: "35245659141",
-    appId: "1:35245659141:web:9b0cd81db9d76f3ebab86c",
-);
-}
+// static const FirebaseOptions web = FirebaseOptions(
+//     apiKey: "AIzaSyBZ0pjkJxE7wsn36zuYtnen-NO7gX5u3qA",
+//     authDomain: "fir-dbdemo-4c345.firebaseapp.com",
+//     databaseURL: "https://fir-dbdemo-4c345-default-rtdb.firebaseio.com",
+//     projectId: "fir-dbdemo-4c345",
+//     storageBucket: "fir-dbdemo-4c345.appspot.com",
+//     messagingSenderId: "35245659141",
+//     appId: "1:35245659141:web:9b0cd81db9d76f3ebab86c",
+// );
+// }
 
   //Zuhriddin
 // static const FirebaseOptions web = FirebaseOptions(

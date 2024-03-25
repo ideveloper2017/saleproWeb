@@ -900,7 +900,7 @@ class _AddProductState extends State<AddProduct> {
     // TODO: implement initState
     super.initState();
     setState(() {
-      productCodeController.text =  getProductCode() as String;
+      // productCodeController.text =  getProductCode() as String;
     });
   }
 
@@ -1563,8 +1563,8 @@ class _AddProductState extends State<AddProduct> {
                                                         },
                                                         onSaved: (value) async {
                                                           if (value.removeAllWhiteSpace().isEmptyOrNull) {
-                                                           productCodeController.text =  await getProductCode();
-                                                          } else {
+                                                          //  productCodeController.text =  await getProductCode();
+                                                          // } else {
                                                             productCodeController.text = value!;
                                                           }
                                                         },

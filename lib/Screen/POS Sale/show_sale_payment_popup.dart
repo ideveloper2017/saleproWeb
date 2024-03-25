@@ -149,13 +149,13 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
       } else {
         dueAmountController.text = (widget.transitionModel.totalAmount!.toDouble() - paidAmount).abs().toString();
         changeAmountController.text = '0';
-        totalDueAmountController.text = (widget.transitionModel.dueAmount!.toInt() + (paidAmount).toInt()).toString();
+        totalDueAmountController.text = (widget.transitionModel.dueAmount!.toDouble() + (paidAmount).toDouble()).toString();
       }
 
       if (paidAmount > widget.transitionModel.dueAmount!.toDouble()) {
-        totalDueAmountController.text = ((widget.transitionModel.totalAmount!.toDouble() - paidAmount)-widget.transitionModel.dueAmount!.toInt()).abs().toString();
+        totalDueAmountController.text = ((widget.transitionModel.totalAmount!.toDouble() - paidAmount)-widget.transitionModel.dueAmount!.toDouble()).abs().toString();
       } else {
-        totalDueAmountController.text = (widget.transitionModel.dueAmount!.toInt() +  (widget.transitionModel.totalAmount!.toInt() + (paidAmount).toInt())).toString();
+        totalDueAmountController.text = (widget.transitionModel.dueAmount!.toDouble() +  (widget.transitionModel.totalAmount!.toDouble() + (paidAmount).toDouble())).toString();
       }
 
     });
@@ -223,32 +223,7 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 200,
-                                            child: Text(
-                                              lang.S.of(context).previousDue,
-                                              style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          SizedBox(
-                                            width: context.width() < 750 ? 170 : context.width() * 0.22,
-                                            child: AppTextField(
-                                              readOnly: true,
-                                              controller: previousdueAmountController,
-                                              cursorColor: kTitleColor,
-                                              textFieldType: TextFieldType.NAME,
-                                              decoration: kInputDecoration.copyWith(
-                                                hintText: lang.S.of(context).previousDue,
-                                                hintStyle: kTextStyle.copyWith(color: kGreyTextColor),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10.0),
+
                                       Row(
                                         children: [
                                           SizedBox(
@@ -292,7 +267,33 @@ class _ShowPaymentPopUpState extends State<ShowPaymentPopUp> {
                                           ),
                                         ],
                                       ),
-                                      // const SizedBox(height: 10.0),
+                                      const SizedBox(height: 10.0),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 200,
+                                            child: Text(
+                                              lang.S.of(context).previousDue,
+                                              style: kTextStyle.copyWith(color: kTitleColor, fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          SizedBox(
+                                            width: context.width() < 750 ? 170 : context.width() * 0.22,
+                                            child: TextFormField(
+                                              readOnly: true,
+                                              controller: previousdueAmountController,
+                                              cursorColor: kRedTextColor,
+                                              style: TextStyle(color: widget.transitionModel.dueAmount!=0?Colors.red:kMainColor),
+                                              decoration: kInputDecoration.copyWith(
+                                                hintText: lang.S.of(context).previousDue,
+                                                hintStyle: kTextStyle.copyWith(color: kRedTextColor),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10.0),
                                       Row(
                                         children: [
                                           SizedBox(

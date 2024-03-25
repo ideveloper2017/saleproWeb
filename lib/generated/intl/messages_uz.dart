@@ -175,8 +175,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Chegirmali narx"),
         "downloadPDF": MessageLookupByLibrary.simpleMessage("PDF yuklab olish"),
         "due": MessageLookupByLibrary.simpleMessage("Qarz"),
-        "dueAmount":
-            MessageLookupByLibrary.simpleMessage("To\'lanadigan balans"),
+        "dueAmount": MessageLookupByLibrary.simpleMessage(
+            "To\'lanishi kerak bo\'lgan summa"),
         "dueAmountWillShowHere": MessageLookupByLibrary.simpleMessage(
             "Agar mavjud bo\'lsa, qarz miqdori shu yerda ko\'rsatiladi"),
         "dueCollection":
@@ -431,8 +431,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "partyType": MessageLookupByLibrary.simpleMessage("Partiya turi"),
         "password": MessageLookupByLibrary.simpleMessage("Parol"),
         "payCash": MessageLookupByLibrary.simpleMessage("Naqd pulda to\'lash"),
-        "payingAmount":
-            MessageLookupByLibrary.simpleMessage("To\'lanadigan summa"),
+        "payingAmount": MessageLookupByLibrary.simpleMessage("Savdo summa"),
         "paymentIn": MessageLookupByLibrary.simpleMessage("To\'lovda"),
         "paymentOut": MessageLookupByLibrary.simpleMessage("To\'lov"),
         "paymentType": MessageLookupByLibrary.simpleMessage("To\'lov turi"),

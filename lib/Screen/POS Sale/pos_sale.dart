@@ -81,8 +81,8 @@ class _PosSaleState extends State<PosSale> {
     List<DropdownMenuItem<String>> dropDownItems = [const DropdownMenuItem(value: 'Guest', child: Text('Guest'))];
     for (var des in model) {
       var item = DropdownMenuItem(
-        value: des.phoneNumber,
-        child: Text('${des.customerName} ${des.phoneNumber}'),
+        value: '${des.customerName}',
+        child: Text('${des.customerName+' '+des.phoneNumber}'),
       );
       dropDownItems.add(item);
     }
@@ -95,13 +95,14 @@ class _PosSaleState extends State<PosSale> {
           color: Theme.of(context).hintColor,
         ),
       ),
-      items: dropDownItems,
+      items: dropDownItems.toList(),
       value: selectedUserId,
       onChanged: (value) {
           setState(() {
             selectedUserId = value!;
+            toast(value!);
             for (var element in model) {
-              if (element.phoneNumber == selectedUserId) {
+              if ((element.customerName == selectedUserId)) {
                 selectedUserName = element;
                 previousDue = element.dueAmount;
                 selectedCustomerType == element.type ? null : {selectedCustomerType = element.type, cartList.clear()};
