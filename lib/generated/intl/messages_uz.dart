@@ -150,8 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customerDue": MessageLookupByLibrary.simpleMessage("Mijoz burchi"),
         "customerInvoices":
             MessageLookupByLibrary.simpleMessage("Mijoz hisob-fakturalari"),
-        "customerList":
-            MessageLookupByLibrary.simpleMessage("Mijozlar ro\'yxati"),
+        "customerList": MessageLookupByLibrary.simpleMessage("Mijozlar"),
         "customerName": MessageLookupByLibrary.simpleMessage("Mijoz nomi"),
         "customerOfTheMonth": MessageLookupByLibrary.simpleMessage("Oy mijozi"),
         "customerType": MessageLookupByLibrary.simpleMessage("Mijoz turi"),
@@ -525,7 +524,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sAmount": MessageLookupByLibrary.simpleMessage("Sotuv summasi"),
         "safegurardYourBusinessDate": MessageLookupByLibrary.simpleMessage(
             "Biznes ma\'lumotlaringizni osongina himoya qiling. Bizning bepul Pos Saas POS Cheksiz ma\'lumotlar zaxiramiz qimmatli ma\'lumotlaringizni kutilmagan hodisalardan himoya qiladi. E\'tiboringizni haqiqatan ham muhim narsaga qarating - biznesingizni rivojlantirish."),
-        "sale": MessageLookupByLibrary.simpleMessage("Sotish"),
+        "sale": MessageLookupByLibrary.simpleMessage("Savdo"),
         "saleAmount": MessageLookupByLibrary.simpleMessage("Sotish summasi"),
         "saleDetails":
             MessageLookupByLibrary.simpleMessage("Sotish tafsilotlari"),
@@ -538,7 +537,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sotish operatsiyasi"),
         "saleTransactionQuatationHistory": MessageLookupByLibrary.simpleMessage(
             "Sotish tranzaksiyalari tarixi (kotirovkalarni sotish tarixi)"),
-        "sales": MessageLookupByLibrary.simpleMessage("Sotish"),
+        "sales": MessageLookupByLibrary.simpleMessage("Savdo"),
         "salesList": MessageLookupByLibrary.simpleMessage("Sotish ro\'yxati"),
         "saveAndPublish":
             MessageLookupByLibrary.simpleMessage("Saqlash va nashr qilish"),
@@ -595,7 +594,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Qo\'shimcha xarajatsiz texnologiya yutuqlaridan xabardor bo\'ling. Bizning bepul Saas POS-ni yangilash sizga har doim eng so\'nggi vositalar va funksiyalarni qo\'lingizda ushlab turishni ta\'minlaydi va biznesingiz yangilanib turishini ta\'minlaydi."),
         "stayAtTheForeFrontOfTechnological": MessageLookupByLibrary.simpleMessage(
             "Qo\'shimcha xarajatsiz texnologik yutuqlarning eng so\'nggi bosqichida qoling. Bizning bepul Pos Sass POS yangilashimiz har doim qo\'lingizda eng so\'nggi vositalar va funksiyalarga ega bo\'lishingizni ta\'minlaydi va biznesingiz yangilanib turishini ta\'minlaydi."),
-        "stock": MessageLookupByLibrary.simpleMessage("Stokda"),
+        "stock": MessageLookupByLibrary.simpleMessage("Omborda"),
         "stockInventory":
             MessageLookupByLibrary.simpleMessage("Stok inventarlari"),
         "stockReport": MessageLookupByLibrary.simpleMessage("Birja hisoboti"),
@@ -611,8 +610,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Yetkazib beruvchining qarzi"),
         "supplierInvoice": MessageLookupByLibrary.simpleMessage(
             "Etkazib beruvchining hisob-fakturasi"),
-        "supplierList": MessageLookupByLibrary.simpleMessage(
-            "Etkazib beruvchilar ro\'yxati"),
+        "supplierList":
+            MessageLookupByLibrary.simpleMessage("Etkazib beruvchilar"),
         "swiftCode": MessageLookupByLibrary.simpleMessage("SWIFT kodi"),
         "tSale": MessageLookupByLibrary.simpleMessage("Jami savdo summasi"),
         "takeADriveLisense": MessageLookupByLibrary.simpleMessage(

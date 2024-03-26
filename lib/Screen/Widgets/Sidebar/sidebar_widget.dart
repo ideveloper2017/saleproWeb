@@ -53,7 +53,7 @@ List<String> getTitleList({required BuildContext context}) {
     "Stock List",
     lang.S.of(context).subciption,
     lang.S.of(context).userRole,
-    "WareHouse",
+    "Omborlar",
   ];
   return titleList;
 }
